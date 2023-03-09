@@ -38,5 +38,5 @@ hs_err_pid*
 replay_pid*
 
 #OpenIRCd specific
-config.ini
-MOTD.txt
+/config.ini
+/MOTD.txt
