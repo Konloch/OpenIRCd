@@ -1,9 +1,9 @@
 package com.konloch;
 
-import com.konloch.ircd.IRCd;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
+
+import com.konloch.irc.OpenIRCd;
 
 /**
  * @author Konloch
@@ -14,7 +14,7 @@ public class TestIRCd
 	public static void main(String[] args) throws IOException, URISyntaxException
 	{
 		//start IRCd
-		IRCd.main(args);
+		OpenIRCd.main(args);
 		
 		//start-up pircbot
 		/*PircBot bot = new Bot();

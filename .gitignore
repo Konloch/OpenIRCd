@@ -37,6 +37,6 @@ dependency-reduced-pom.xml
 hs_err_pid*
 replay_pid*
 
-#jIRCd specific
+#OpenIRCd specific
 config.ini
 MOTD.txt

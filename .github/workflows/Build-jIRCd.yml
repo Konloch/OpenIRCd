@@ -1,6 +1,6 @@
 # This will build the repo and upload the package as an artifact
 
-name: Build jIRCd
+name: Build OpenIRCd
 
 on:
   push:
@@ -33,6 +33,6 @@ jobs:
       uses: actions/upload-artifact@v3
       if: ${{ matrix.java == '8' }}
       with:
-        name: jIRCd-${{ env.lib_version }}-SNAPSHOT
-        path: target/jIRCd-${{ env.lib_version }}.jar
+        name: OpenIRCd-${{ env.lib_version }}-SNAPSHOT
+        path: target/OpenIRCd-${{ env.lib_version }}.jar
         retention-days: 90

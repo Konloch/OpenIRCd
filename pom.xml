@@ -2,12 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.konloch</groupId>
-	<artifactId>jIRCd</artifactId>
+	<artifactId>OpenIRCd</artifactId>
 	<version>0.1.0</version>
 
-	<name>jIRCd</name>
-	<description>jIRCd is an easy-to-use zero dependency minimalistic IRC server for Java.</description>
-	<url>https://konloch.com/jIRCd/</url>
+	<name>OpenIRCd</name>
+	<description>OpenIRCd is an easy-to-use zero dependency minimalistic IRC server for Java.</description>
+	<url>https://konloch.com/OpenIRCd/</url>
 	<inceptionYear>2023</inceptionYear>
 
 	<licenses>
@@ -33,9 +33,9 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git://github.com/Konloch/jIRCd.git</connection>
-		<developerConnection>scm:git:ssh://github.com:Konloch/jIRCd.git</developerConnection>
-		<url>http://github.com/Konloch/jIRCd/tree/master</url>
+		<connection>scm:git:git://github.com/Konloch/OpenIRCd.git</connection>
+		<developerConnection>scm:git:ssh://github.com:Konloch/OpenIRCd.git</developerConnection>
+		<url>http://github.com/Konloch/OpenIRCd/tree/master</url>
 	</scm>
 
 	<properties>
@@ -132,7 +132,7 @@
 				<configuration>
 					<transformers>
 						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-							<mainClass>com.konloch.ircd.IRCd</mainClass>
+							<mainClass>com.konloch.irc.OpenIRCd</mainClass>
 							<manifestEntries>
 								<Implementation-Version>${project.version}</Implementation-Version>
 								<X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>
