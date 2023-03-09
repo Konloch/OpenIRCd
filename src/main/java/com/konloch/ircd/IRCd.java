@@ -44,7 +44,6 @@ public class IRCd
 	private final EventManager events = new EventManager();
 	private final TaskManager taskManager = new TaskManager();
 	private int keepAlive;
-	private boolean waitForReads = true; //set true and it will wait for \n or \r in the message reads
 	
 	public static void main(String[] args) throws IOException, URISyntaxException
 	{
@@ -172,41 +171,18 @@ public class IRCd
 						e.printStackTrace();
 					}
 					
-					//if we're not waiting to verify EOL, process everything
-					if(!waitForReads)
-					{
+					if(buffer.hasReachedEOL)
 						client.setState(3);
-					}
 					else
-					{
-						boolean returnCarriage = false;
-						boolean endOfFile = false;
-						for(byte b : bytes)
-						{
-							char c = (char) b;
-							if(c == '\n' || c == '\r')
-							{
-								if(returnCarriage)
-									endOfFile = true;
-								else
-									returnCarriage = true;
-							}
-							else if(returnCarriage)
-								returnCarriage = false;
-						}
-						
-						if(endOfFile)
-							client.setState(3);
-						else
-							client.setState(0);
-					}
-					
+						client.setState(0);
+				
 					break;
 					
 				case 3:
 					//decode the message
 					try
 					{
+						//TODO move from regex split
 						String[] msg = new String(buffer.inputBuffer.toByteArray(), StandardCharsets.UTF_8).split("\\r?\\n");
 						
 						for(String s : msg)
@@ -217,6 +193,7 @@ public class IRCd
 						e.printStackTrace();
 					}
 					
+					buffer.hasReachedEOL = false;
 					buffer.inputBuffer.reset();
 					
 					client.setState(0);
