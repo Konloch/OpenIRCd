@@ -21,15 +21,13 @@ public class IRCProtocolDecoder
 		if(user.getIRC().isVerbose())
 			System.out.println("I: " + messages);
 		
-		String[] msg = messages.contains("\n")
-				? FastStringUtils.split(messages, "\n", 2)
-				: FastStringUtils.split(messages, "\r", 2);
+		String[] msg = messages.split("\\r?\\n");
 		
 		for(String message : msg)
 		{
-			message = message.replace("\n", "").replace("\r", "");
 			String messageIdentifier;
 			String messageValue;
+			
 			if (message.contains(" "))
 			{
 				String[] blob = FastStringUtils.split(message, " ", 2);
