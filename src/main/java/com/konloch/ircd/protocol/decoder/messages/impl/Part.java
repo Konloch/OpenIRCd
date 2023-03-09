@@ -52,6 +52,7 @@ public class Part implements ProtocolMessage
 			user.leaveChannel(channelName);
 		}
 		
+		//TODO
 		//signal the join back to the client
 		/*user.getEncoder().newUserMessage()
 				.opcode(RPL_JOIN)
