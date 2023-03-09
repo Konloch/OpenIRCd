@@ -27,28 +27,28 @@ public enum DecodeMessage
 	static
 	{
 		for(DecodeMessage message : values())
-			lookup.put(message.getMessageIdentifier().toLowerCase(), message);
+			lookup.put(message.getIdentifier().toLowerCase(), message);
 	}
 	
-	private final String messageIdentifier;
-	private final String messageDocumentation;
+	private final String identifier;
+	private final String documentation;
 	private final ProtocolMessage decodeRunnable;
 	
 	DecodeMessage(String messageIdentifier, String messageDocumentation, ProtocolMessage decodeRunnable)
 	{
-		this.messageIdentifier = messageIdentifier;
-		this.messageDocumentation = messageDocumentation;
+		this.identifier = messageIdentifier;
+		this.documentation = messageDocumentation;
 		this.decodeRunnable = decodeRunnable;
 	}
 	
-	public String getMessageIdentifier()
+	public String getIdentifier()
 	{
-		return messageIdentifier;
+		return identifier;
 	}
 	
-	public String getMessageDocumentation()
+	public String getDocumentation()
 	{
-		return messageDocumentation;
+		return documentation;
 	}
 	
 	public ProtocolMessage getDecodeRunnable()
