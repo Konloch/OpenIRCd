@@ -22,7 +22,7 @@ java -jar OpenIRCd-v0.1.0.jar
 
 ### Translations
 + Translations are automatic, to define a specific translation go into the `config.ini` and edit `translation=<translation goes here>`
-+ Fully translated into English, Arabic, Croatian, Czech, Bulgarian, Danish, Estonian, Farsi, Finnish, French, German, Georgian, Greek, Hausa, Hebrew, Hungarian, Indonesian, Italian, Japanese, Lativan, Lithuanian, Malay, Mandarin, Nederlands, Norwegian, Polish, Portuguese, Romanian, Russian, Slovak, Slovenian, Spanish, Serbian, Swahili, Swedish, Turkish, Ukrainian & Vietnamese.
++ Fully translated into `English, Arabic, Croatian, Czech, Bulgarian, Danish, Estonian, Farsi, Finnish, French, German, Georgian, Greek, Hausa, Hebrew, Hungarian, Indonesian, Italian, Japanese, Lativan, Lithuanian, Malay, Mandarin, Nederlands, Norwegian, Polish, Portuguese, Romanian, Russian, Slovak, Slovenian, Spanish, Serbian, Swahili, Swedish, Turkish, Ukrainian & Vietnamese`.
 
 ## Implementation Progress
 + `IRC v1` is the target but certain `IRC v3 extensions` are planned to be supported ([SASL](https://ircv3.net/specs/extensions/sasl-3.1))
