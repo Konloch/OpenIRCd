@@ -6,6 +6,7 @@ import com.konloch.irc.extension.cli.IRCdCLI;
 import com.konloch.irc.extension.events.EventManager;
 import com.konloch.irc.extension.events.listeners.IRCdListener;
 import com.konloch.irc.extension.events.listeners.IRCdUserAdapter;
+import com.konloch.irc.extension.plugins.ConnectionNotice;
 import com.konloch.irc.extension.plugins.NickServ;
 import com.konloch.irc.extension.plugins.ResourceLimiter;
 import com.konloch.irc.protocol.decoder.IRCProtocolDecoder;
@@ -62,23 +63,12 @@ public class OpenIRCd
 		//start the ircd
 		irc.start();
 		
-		//alert hostname look-ups are disabled
-		irc.getEvents().getUserEvents().add(new IRCdUserAdapter()
-		{
-			@Override
-			public void onConnect(User user)
-			{
-				user.getEncoder().sendNotice("** This server is running an experimental IRCd");
-				user.getEncoder().sendNotice("** Expect & report bugs / lack of functionality");
-			}
-		});
-		
 		//announce that we're online
-		System.out.println(irc.getIRCdVersionString() + " online and running on port " + irc.getServer().getPort());
+		System.out.println(irc.fromConfig("startup"));
 		System.out.println();
 		
-		//handle CLI while the application is running
-		System.out.println("Type any command below ('help' to get started):");
+		//handle CLI input while the application is running
+		System.out.println(irc.fromConfig("typeAnyCommand") + " ('help' " + irc.fromConfig("toGetStarted") + "):");
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
 		while(true)
@@ -269,6 +259,10 @@ public class OpenIRCd
 		if(isNickServEnabled())
 			new NickServ().install(this);
 		
+		//install nickServ extension
+		if(isConnectionNoticeEnabled())
+			new ConnectionNotice().install(this);
+		
 		//shutdown hook to fire irc stop events
 		Runtime.getRuntime().addShutdownHook(new Thread(()-> events.getIrcEvents().forEach(IRCdListener::onIRCStop)));
 	}
@@ -402,6 +396,11 @@ public class OpenIRCd
 	public boolean isNickServEnabled()
 	{
 		return fromConfigBoolean("nickServ");
+	}
+	
+	public boolean isConnectionNoticeEnabled()
+	{
+		return fromConfigBoolean("connectionNotice");
 	}
 	
 	public boolean isVerbose()
