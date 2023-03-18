@@ -14,7 +14,7 @@ import java.util.*;
 public enum Language
 {
 	ENGLISH("/translations/english.ini", "English", "en"),
-	/*ARABIC("/translations/arabic.ini", "عربى", "ar"),
+	ARABIC("/translations/arabic.ini", "عربى", "ar"),
 	CROATIAN("/translations/croatian.ini", "hrvatski", "hr"),
 	CZECH("/translations/czech.ini", "čeština", "cs"),
 	BULGARIAN("/translations/bulgarian.ini", "български", "bg"),
@@ -50,7 +50,7 @@ public enum Language
 	SWEDISH("/translations/swedish.ini", "svenska", "sv"),
 	TURKISH("/translations/turkish.ini", "Türkçe", "tr"),
 	UKRAINIAN("/translations/ukrainian.ini", "украї́нська мо́ва", "uk"),
-	VIETNAMESE("/translations/vietnamese.ini", "Tiếng Việt", "vi"),*/
+	VIETNAMESE("/translations/vietnamese.ini", "Tiếng Việt", "vi"),
 	;
 	
 	private static final Map<String, Language> languageCodeLookup;
