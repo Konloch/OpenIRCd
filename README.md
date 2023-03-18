@@ -1,6 +1,8 @@
 # OpenIRCd
 OpenIRCd is an easy-to-use non-blocking high performance IRC server written in Java.
 
+![A screenshot of OpenIRCd](.github/screenshot.png "Screenshot")
+
 **This is a work in progress** and acts as an example of how to use the [Socket-Server](https://github.com/Konloch/Socket-Server/) library.
 
 ## How To Use
