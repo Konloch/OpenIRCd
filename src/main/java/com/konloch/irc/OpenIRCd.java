@@ -12,7 +12,9 @@ import com.konloch.irc.protocol.decoder.IRCProtocolDecoder;
 import com.konloch.irc.server.channel.Channel;
 import com.konloch.irc.server.client.User;
 import com.konloch.irc.server.client.UserBuffer;
-import com.konloch.irc.server.config.IRCdConfig;
+import com.konloch.irc.server.command.CLI;
+import com.konloch.irc.server.config.IRCdConfigDSL;
+import com.konloch.irc.server.util.SplitArgument;
 import com.konloch.socket.SocketClient;
 import com.konloch.socket.SocketServer;
 import com.konloch.taskmanager.TaskManager;
@@ -24,8 +26,10 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -43,12 +47,20 @@ public class OpenIRCd
 	private final HashMap<String, DSLRuntimeCommand> config;
 	private final EventManager events = new EventManager();
 	private final TaskManager taskManager = new TaskManager();
+	private final CLI cli = new CLI();
 	private int keepAlive;
 	
 	public static void main(String[] args) throws IOException, URISyntaxException
 	{
 		//create new ircd instance
 		OpenIRCd ircd = new OpenIRCd(new File("./config.ini"));
+		
+		//execute CLI and exit
+		if(args != null && args.length != 0)
+		{
+			ircd.cli.execute(args);
+			return;
+		}
 		
 		//start the ircd
 		ircd.start();
@@ -66,6 +78,16 @@ public class OpenIRCd
 		
 		//announce that we're online
 		System.out.println(ircd.getIRCdVersionString() + " online and running on port " + ircd.getServer().getPort());
+		System.out.println();
+		
+		//handle CLI while the application is running
+		System.out.println("Type any command below ('help' to get started):");
+		System.out.println();
+		Scanner sc = new Scanner(System.in);
+		while(true)
+		{
+			ircd.cli.execute(SplitArgument.parse(sc.nextLine()));
+		}
 	}
 	
 	public OpenIRCd(File configFile) throws IOException, URISyntaxException
@@ -75,7 +97,7 @@ public class OpenIRCd
 			DiskWriter.write(configFile, Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("./config.ini").toURI())));
 		
 		//create a config parser
-		configParser = new IRCdConfig();
+		configParser = new IRCdConfigDSL();
 		
 		//parse the config file
 		configParser.parse(configFile);
@@ -224,6 +246,10 @@ public class OpenIRCd
 		//set the serer timeout
 		server.setTimeout(fromConfigInt("timeout"));
 		
+		
+		//install CLI commands
+		cli.load();
+		
 		//install spam-filter extension
 		if(isResourceLimiterEnabled())
 			new ResourceLimiter().install(this);
@@ -310,6 +336,11 @@ public class OpenIRCd
 	public TaskManager getTaskManager()
 	{
 		return taskManager;
+	}
+	
+	public CLI getCli()
+	{
+		return cli;
 	}
 	
 	public String getIRCdName()
