@@ -11,9 +11,17 @@ java -jar OpenIRCd-v0.1.0.jar
 + This will create the default config under `./config.ini`
 + Adjust the configuration as needed, then restart the server.
 
+### Commands
++ You can execute commands through the CLI by executing it directly as a program argument
+    + This will save the database to disk once the command has finished executing.
++ Or, you can execute commands from the terminal just by executing it normally and typing into the console.
++ Type `help` to get started.
++ To give operator priviliges just type `op add <nick>` - *Oppers have to setup and verify with nickserv*.
+
 ## Implementation Progress
 + `IRC v1` is the target but certain `IRC v3 extensions` are planned to be supported ([SASL](https://ircv3.net/specs/extensions/sasl-3.1))
 + Configuration is done and supports variables
++ Command base with CLI is done
 + Core protocol decoding and encoding is done
 + Core API has been started and is partially finished
 + Temporary channels are done but persistent channels with permissions have not been started
