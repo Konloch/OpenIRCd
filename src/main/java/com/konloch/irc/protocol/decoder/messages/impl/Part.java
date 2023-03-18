@@ -1,6 +1,7 @@
 package com.konloch.irc.protocol.decoder.messages.impl;
 
 import static com.konloch.irc.protocol.encoder.messages.IRCOpcodes.RPL_JOIN;
+import static com.konloch.irc.protocol.encoder.messages.IRCOpcodes.RPL_PART;
 
 import com.konloch.irc.extension.events.listeners.IRCdUserListener;
 import com.konloch.irc.protocol.ProtocolMessage;
@@ -52,12 +53,11 @@ public class Part implements ProtocolMessage
 			user.leaveChannel(channelName);
 		}
 		
-		//TODO
 		//signal the join back to the client
-		/*user.getEncoder().newUserMessage()
-				.opcode(RPL_JOIN)
+		user.getEncoder().newUserMessage()
+				.opcode(RPL_PART)
 				.message(channelName)
-				.send();*/
+				.send();
 		
 		//update the room list
 		for(User other : channel.getUsers())
