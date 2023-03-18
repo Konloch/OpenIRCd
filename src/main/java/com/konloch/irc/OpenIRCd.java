@@ -1,8 +1,8 @@
 package com.konloch.irc;
 
-import com.konloch.disklib.DiskWriter;
 import com.konloch.dsl.DSL;
 import com.konloch.dsl.runtime.DSLRuntimeCommand;
+import com.konloch.irc.extension.cli.IRCdCLI;
 import com.konloch.irc.extension.events.EventManager;
 import com.konloch.irc.extension.events.listeners.IRCdListener;
 import com.konloch.irc.extension.events.listeners.IRCdUserAdapter;
@@ -26,8 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -52,20 +50,20 @@ public class OpenIRCd
 	public static void main(String[] args) throws IOException, URISyntaxException
 	{
 		//create new ircd instance
-		OpenIRCd ircd = new OpenIRCd(new File("./config.ini"));
+		OpenIRCd irc = new OpenIRCd(new File("./config.ini"));
 		
 		//execute CLI and exit
 		if(args != null && args.length != 0)
 		{
-			ircd.cli.execute(args);
+			irc.cli.execute(args);
 			return;
 		}
 		
 		//start the ircd
-		ircd.start();
+		irc.start();
 		
 		//alert hostname look-ups are disabled
-		ircd.getEvents().getUserEvents().add(new IRCdUserAdapter()
+		irc.getEvents().getUserEvents().add(new IRCdUserAdapter()
 		{
 			@Override
 			public void onConnect(User user)
@@ -76,7 +74,7 @@ public class OpenIRCd
 		});
 		
 		//announce that we're online
-		System.out.println(ircd.getIRCdVersionString() + " online and running on port " + ircd.getServer().getPort());
+		System.out.println(irc.getIRCdVersionString() + " online and running on port " + irc.getServer().getPort());
 		System.out.println();
 		
 		//handle CLI while the application is running
@@ -85,7 +83,7 @@ public class OpenIRCd
 		Scanner sc = new Scanner(System.in);
 		while(true)
 		{
-			ircd.cli.execute(FastStringUtils.parseArguments(sc.nextLine()));
+			irc.cli.execute(FastStringUtils.parseArguments(sc.nextLine()));
 		}
 	}
 	
@@ -101,7 +99,10 @@ public class OpenIRCd
 		//parse the config file
 		configParser.parse(configFile);
 		
-		String translation = configParser.getRuntime().getCommands().get("translation").getVariableValue(configParser.getRuntime());
+		//return the parsed config results
+		config = configParser.getRuntime().getCommands();
+		
+		String translation = fromConfig("translation");
 		
 		if(translation.equalsIgnoreCase("automatic"))
 		{
@@ -113,8 +114,8 @@ public class OpenIRCd
 		//parse translations
 		configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/" + translation + ".ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
 		
-		//return the parsed config results
-		config = configParser.getRuntime().getCommands();
+		//insert version
+		configParser.parse(new ArrayList<>(Arrays.asList("version=" + getIRCdVersion())));
 		
 		final int maximumSimultaneousConnections = fromConfigInt("limitMaxSimultaneousConnections");
 		
@@ -257,9 +258,8 @@ public class OpenIRCd
 		//set the serer timeout
 		server.setTimeout(fromConfigInt("timeout"));
 		
-		
 		//install CLI commands
-		cli.load();
+		new IRCdCLI().load(this);
 		
 		//install spam-filter extension
 		if(isResourceLimiterEnabled())
@@ -349,7 +349,7 @@ public class OpenIRCd
 		return taskManager;
 	}
 	
-	public CLI getCli()
+	public CLI getCLI()
 	{
 		return cli;
 	}
@@ -411,6 +411,9 @@ public class OpenIRCd
 	
 	public String fromConfig(String variableName)
 	{
+		if(!config.containsKey(variableName))
+			throw new RuntimeException("Could not find configuration-key `"+variableName+"`");
+
 		String value = config.get(variableName).getVariableValue(configParser.getRuntime());
 		if(value == null)
 			return "";

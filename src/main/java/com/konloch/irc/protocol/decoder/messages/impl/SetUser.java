@@ -59,13 +59,13 @@ public class SetUser implements ProtocolMessage
 		//send the host message
 		user.getEncoder().newServerUserMessage()
 				.opcode(RPL_YOURHOST)
-				.message("Your host is " + user.getIRC().getHost() + ", running version " + user.getIRC().getIRCdVersionString())
+				.message(user.getIRC().fromConfig("yourHost"))
 				.send();
 		
 		//send the creation date message
 		user.getEncoder().newServerUserMessage()
 				.opcode(RPL_CREATED)
-				.message("This server was created " + user.getIRC().getCreated())
+				.message(user.getIRC().fromConfig("creationDate"))
 				.send();
 		
 		//send the info message
