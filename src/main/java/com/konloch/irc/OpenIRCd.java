@@ -94,7 +94,7 @@ public class OpenIRCd
 	{
 		//drop the default config
 		if(!configFile.exists())
-			DiskWriter.write(configFile, Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("./config.ini").toURI())));
+			DiskWriter.write(configFile, Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("config.ini").toURI())));
 		
 		//create a config parser
 		configParser = new IRCdConfigDSL();
@@ -112,7 +112,7 @@ public class OpenIRCd
 		
 		//drop the default MOTD
 		if(!getMOTDFile().exists())
-			DiskWriter.write(getMOTDFile(), Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("./MOTD.txt").toURI())));
+			DiskWriter.write(getMOTDFile(), Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("MOTD.txt").toURI())));
 		
 		//TODO plugins should be loaded here
 		
