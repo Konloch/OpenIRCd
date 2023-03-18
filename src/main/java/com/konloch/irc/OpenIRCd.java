@@ -14,6 +14,7 @@ import com.konloch.irc.server.client.User;
 import com.konloch.irc.server.client.UserBuffer;
 import com.konloch.irc.server.command.CLI;
 import com.konloch.irc.server.config.IRCdConfigDSL;
+import com.konloch.irc.server.util.DumpResource;
 import com.konloch.irc.server.util.SplitArgument;
 import com.konloch.socket.SocketClient;
 import com.konloch.socket.SocketServer;
@@ -94,7 +95,7 @@ public class OpenIRCd
 	{
 		//drop the default config
 		if(!configFile.exists())
-			DiskWriter.write(configFile, Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("config.ini").toURI())));
+			DumpResource.dump("/config.ini", configFile);
 		
 		//create a config parser
 		configParser = new IRCdConfigDSL();
@@ -112,7 +113,7 @@ public class OpenIRCd
 		
 		//drop the default MOTD
 		if(!getMOTDFile().exists())
-			DiskWriter.write(getMOTDFile(), Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("MOTD.txt").toURI())));
+			DumpResource.dump("/MOTD.txt", getMOTDFile());
 		
 		//TODO plugins should be loaded here
 		
