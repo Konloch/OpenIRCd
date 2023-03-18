@@ -15,7 +15,6 @@ import com.konloch.irc.server.client.UserBuffer;
 import com.konloch.irc.server.command.CLI;
 import com.konloch.irc.server.config.IRCdConfigDSL;
 import com.konloch.irc.server.util.DumpResource;
-import com.konloch.irc.server.util.SplitArgument;
 import com.konloch.socket.SocketClient;
 import com.konloch.socket.SocketServer;
 import com.konloch.taskmanager.TaskManager;
@@ -87,7 +86,7 @@ public class OpenIRCd
 		Scanner sc = new Scanner(System.in);
 		while(true)
 		{
-			ircd.cli.execute(SplitArgument.parse(sc.nextLine()));
+			ircd.cli.execute(FastStringUtils.parseArguments(sc.nextLine()));
 		}
 	}
 	
