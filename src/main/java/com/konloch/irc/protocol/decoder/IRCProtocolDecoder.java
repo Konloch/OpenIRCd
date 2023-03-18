@@ -56,7 +56,7 @@ public class IRCProtocolDecoder
 			{
 				user.getEncoder().newServerUserMessage()
 						.opcode(ERR_UNKNOWNCOMMAND)
-						.message(user.getIRC().fromConfig("unknownCommand"))
+						.message(user.getIRC().fromConfig("unknown.command"))
 						.send();
 			}
 		}

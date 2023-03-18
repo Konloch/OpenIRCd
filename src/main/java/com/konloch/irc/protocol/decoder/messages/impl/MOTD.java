@@ -23,7 +23,7 @@ public class MOTD implements ProtocolMessage
 		{
 			user.getEncoder().newServerUserMessage()
 					.opcode(RPL_ENDOFMOTD)
-					.message(user.getIRC().fromConfig("MOTDStart"))
+					.message(user.getIRC().fromConfig("MOTD.start"))
 					.send();
 			
 			try
@@ -45,7 +45,7 @@ public class MOTD implements ProtocolMessage
 			
 			user.getEncoder().newServerUserMessage()
 					.opcode(RPL_ENDOFMOTD)
-					.message(user.getIRC().fromConfig("MOTDEnd"))
+					.message(user.getIRC().fromConfig("MOTD.end"))
 					.send();
 		}
 		else

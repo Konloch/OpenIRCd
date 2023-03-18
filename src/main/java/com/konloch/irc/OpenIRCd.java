@@ -68,7 +68,7 @@ public class OpenIRCd
 		System.out.println();
 		
 		//handle CLI input while the application is running
-		System.out.println(irc.fromConfig("typeAnyCommand") + " ('help' " + irc.fromConfig("toGetStarted") + "):");
+		System.out.println(irc.fromConfig("type.any.command") + " ('help' " + irc.fromConfig("to.get.started") + "):");
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
 		while(true)
