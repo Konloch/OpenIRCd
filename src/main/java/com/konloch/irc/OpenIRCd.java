@@ -5,7 +5,6 @@ import com.konloch.dsl.runtime.DSLRuntimeCommand;
 import com.konloch.irc.extension.cli.IRCdCLI;
 import com.konloch.irc.extension.events.EventManager;
 import com.konloch.irc.extension.events.listeners.IRCdListener;
-import com.konloch.irc.extension.events.listeners.IRCdUserAdapter;
 import com.konloch.irc.extension.plugins.ConnectionNotice;
 import com.konloch.irc.extension.plugins.NickServ;
 import com.konloch.irc.extension.plugins.ResourceLimiter;
@@ -46,6 +45,7 @@ public class OpenIRCd
 	private final EventManager events = new EventManager();
 	private final TaskManager taskManager = new TaskManager();
 	private final CLI cli = new CLI();
+	private boolean running = true;
 	private int keepAlive;
 	
 	public static void main(String[] args) throws IOException, URISyntaxException
@@ -63,18 +63,8 @@ public class OpenIRCd
 		//start the ircd
 		irc.start();
 		
-		//announce that we're online
-		System.out.println(irc.fromConfig("startup"));
-		System.out.println();
-		
-		//handle CLI input while the application is running
-		System.out.println(irc.fromConfig("type.any.command") + " ('help' " + irc.fromConfig("to.get.started") + "):");
-		System.out.println();
-		Scanner sc = new Scanner(System.in);
-		while(true)
-		{
-			irc.cli.execute(FastStringUtils.parseArguments(sc.nextLine()));
-		}
+		//launch the CLI portion of the IRC server
+		irc.CLI();
 	}
 	
 	public OpenIRCd(File configFile) throws IOException, URISyntaxException
@@ -101,8 +91,12 @@ public class OpenIRCd
 			translation = Language.getLanguageCodeLookup().getOrDefault(systemLanguageCode, Language.ENGLISH).name().toLowerCase();
 		}
 		
-		//parse translations
-		configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/" + translation + ".ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
+		//parse base (english) translations
+		configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/english.ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
+
+		//parse non-english translations
+		if(!translation.equals("english"))
+			configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/" + translation + ".ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
 		
 		//insert version
 		configParser.parse(new ArrayList<>(Arrays.asList("version=" + getIRCdVersion())));
@@ -291,11 +285,28 @@ public class OpenIRCd
 		
 		return null;
 	}
+
+	public void CLI()
+	{
+		//handle CLI input while the application is running
+		System.out.println(fromConfig("type.any.command") + " ('help' " + fromConfig("to.get.started") + "):");
+		System.out.println();
+		Scanner sc = new Scanner(System.in);
+		while(running)
+		{
+			cli.execute(FastStringUtils.parseArguments(sc.nextLine()));
+		}
+		sc.close();
+	}
 	
 	public void start()
 	{
 		server.start();
 		taskManager.start();
+		
+		//announce that we're online
+		System.out.println(fromConfig("startup"));
+		System.out.println();
 	}
 	
 	public void stop()
@@ -331,6 +342,10 @@ public class OpenIRCd
 	public HashMap<String, DSLRuntimeCommand> getConfig()
 	{
 		return config;
+	}
+
+	public DSL getConfigParser() {
+		return configParser;
 	}
 	
 	public EventManager getEvents()

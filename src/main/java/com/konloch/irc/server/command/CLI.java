@@ -35,7 +35,6 @@ public class CLI
 				}
 				
 				command.getRun().run(new CommandInstance(command.getChain().getName(), args));
-				break;
 			}
 	}
 	
