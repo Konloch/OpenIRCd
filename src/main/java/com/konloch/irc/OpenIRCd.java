@@ -14,7 +14,9 @@ import com.konloch.irc.server.client.User;
 import com.konloch.irc.server.client.UserBuffer;
 import com.konloch.irc.server.command.CLI;
 import com.konloch.irc.server.config.IRCdConfigDSL;
+import com.konloch.irc.server.translation.Language;
 import com.konloch.irc.server.util.DumpResource;
+import com.konloch.irc.server.util.ReadResource;
 import com.konloch.socket.SocketClient;
 import com.konloch.socket.SocketServer;
 import com.konloch.taskmanager.TaskManager;
@@ -26,10 +28,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -101,6 +100,18 @@ public class OpenIRCd
 		
 		//parse the config file
 		configParser.parse(configFile);
+		
+		String translation = configParser.getRuntime().getCommands().get("translation").getVariableValue(configParser.getRuntime());
+		
+		if(translation.equalsIgnoreCase("automatic"))
+		{
+			String userLanguage = System.getProperty("user.language");
+			String systemLanguageCode = userLanguage != null ? userLanguage.toLowerCase() : "";
+			translation = Language.getLanguageCodeLookup().getOrDefault(systemLanguageCode, Language.ENGLISH).name().toLowerCase();
+		}
+		
+		//parse translations
+		configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/" + translation + ".ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
 		
 		//return the parsed config results
 		config = configParser.getRuntime().getCommands();
