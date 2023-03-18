@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * All of the supported languages
  *
- * TODO: Hindi, Bengali, Korean, Thai & Javanese need fonts to be supplied for them to show.
+ * TODO: Hindi, Bengali, Korean, Thai and Javanese need fonts to be supplied for them to show.
  *  The default font should be saved so it can be restored for latin-character based languages
  *
  * @author Konloch
