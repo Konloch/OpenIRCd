@@ -22,18 +22,34 @@ public class IRCdCLI
 	{
 		//op
 		irc.getCLI().register(new Command("op", irc.fromConfig("command.op.description"), command->{
-		
+			if(command.getArguments().length > 0 && command.getArguments()[0].equals("add"))
+			{
+				
+			}
+			else if(command.getArguments().length > 0 && command.getArguments()[0].equals("add"))
+			{
+				
+			}
+			else
+			{
+				System.out.println("Incorrect command usage");
+			}
 		}).addArgument("add/remove", irc.fromConfig("command.op.add.description"))
 				.addArgument("nick", irc.fromConfig("command.op.add.nick.description"))
 				.get());
 
 		//translation list
 		irc.getCLI().register(new Command("lang", irc.fromConfig("command.translation.description"), command->{
-			if(command.getArguments().length == 1 && command.getArguments()[0].equals("list"))
+			if(command.getArguments().length == 2 && command.getArguments()[0].equals("set")) {} //handled below
+			else if(command.getArguments().length == 1 && command.getArguments()[0].equals("list"))
 			{
 				System.out.println("There are " + Language.values().length + " translations:");
 				for(Language language : Language.values())
 					System.out.println(" + " + language.name().toLowerCase() + " - " + language.getReadableName());
+			}
+			else
+			{
+				System.out.println("Incorrect command usage");
 			}
 		}).addArgument("list", irc.fromConfig("command.command.list.description"))
 				.get());
@@ -99,11 +115,13 @@ public class IRCdCLI
 							
 							argument = argument.getChild();
 						}
+
 						System.out.println();
 					}
 				}
 				
-				System.out.println(irc.fromConfig("command.help.could.not.find") + ": `" + cmd + "`");
+				if(!listedHeader)
+					System.out.println("Incorrect command usage");
 			}
 		}).addOptionalArgument("command", irc.fromConfig("command.help.command.description")).get());
 	}

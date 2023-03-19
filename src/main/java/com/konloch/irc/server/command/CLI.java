@@ -2,6 +2,8 @@ package com.konloch.irc.server.command;
 
 import java.util.ArrayList;
 
+import com.konloch.irc.OpenIRCd;
+
 /**
  * Acts as the CLI for the IRCd
  *
@@ -10,7 +12,13 @@ import java.util.ArrayList;
  */
 public class CLI
 {
+	private final OpenIRCd irc;
 	private final ArrayList<Command> commands = new ArrayList<>();
+	
+	public CLI(OpenIRCd irc)
+	{
+		this.irc = irc;
+	}
 	
 	public CLI register(Command command)
 	{
@@ -24,6 +32,7 @@ public class CLI
 		if(commandWithArgs == null || commandWithArgs.length == 0)
 			return;
 		
+		boolean found = false;
 		for(Command command : commands)
 			if(command.getChain().getName().equalsIgnoreCase(commandWithArgs[0]))
 			{
@@ -35,7 +44,13 @@ public class CLI
 				}
 				
 				command.getRun().run(new CommandInstance(command.getChain().getName(), args));
+				found = true;
 			}
+
+		if(!found)
+		{
+			System.out.println(irc.fromConfig("command.help.could.not.find") + ": `" + commandWithArgs[0] + "`");
+		}
 	}
 	
 	public ArrayList<Command> getCommands()

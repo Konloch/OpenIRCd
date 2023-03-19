@@ -44,7 +44,7 @@ public class OpenIRCd
 	private final HashMap<String, DSLRuntimeCommand> config;
 	private final EventManager events = new EventManager();
 	private final TaskManager taskManager = new TaskManager();
-	private final CLI cli = new CLI();
+	private final CLI cli;
 	private boolean running = true;
 	private int keepAlive;
 	
@@ -111,6 +111,9 @@ public class OpenIRCd
 			DumpResource.dump("/MOTD.txt", getMOTDFile());
 		
 		//TODO plugins should be loaded here
+		
+		//init CLI
+		cli = new CLI(this);
 		
 		//on boot event
 		events.getIrcEvents().forEach(IRCdListener::onIRCBoot);
