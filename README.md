@@ -19,9 +19,10 @@ java -jar OpenIRCd-v0.1.0.jar
 + Or, you can execute commands from the terminal just by executing it normally and typing into the console.
 + Type `help` to get started.
 + To give operator priviliges just type `op add <nick>` - *Oppers have to setup and verify with nickserv*.
++ To list all languages type `lang list`, then to set the language type `lang set <language>`.
 
 ### Translations
-+ Translations are automatically selected with your system language, to define a specific translation go into the `config.ini` and edit `translation=<translation goes here>`
++ Translations are automatically selected with your system language, to define a specific translation go into the `config.ini` and edit `translation=<language>`
 + Fully translated into `English, Arabic, Croatian, Czech, Bulgarian, Danish, Estonian, Farsi, Finnish, French, German, Georgian, Greek, Hausa, Hebrew, Hungarian, Indonesian, Italian, Japanese, Lativan, Lithuanian, Malay, Mandarin, Nederlands, Norwegian, Polish, Portuguese, Romanian, Russian, Slovak, Slovenian, Spanish, Serbian, Swahili, Swedish, Turkish, Ukrainian & Vietnamese`.
 
 ## Implementation Progress
