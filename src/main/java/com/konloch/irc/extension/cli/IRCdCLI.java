@@ -90,11 +90,8 @@ public class IRCdCLI
 						System.out.println(c);
 						
 						CommandArgument argument = c.getChain().getChild();
-						while(true)
+						while(argument != null)
 						{
-							if(argument == null)
-								break;
-							
 							if(argument.isOptional())
 								System.out.println("<*" + argument.getName() + "> - " + argument.getDescription() + " (* = " + irc.fromConfig("command.help.optional.command") + ")");
 							else
