@@ -67,7 +67,7 @@ public class SerializerTest
 		private final String email;
 		private String setNull = "should be null";
 		private String setEmpty = "should be empty";
-		private String testNewLines;
+		private String testNewLines = "\n\n\n\nbreaks\n\n\n";
 		private boolean boolTest = true;
 		private byte byteTest = 1;
 		private short shortTest = 1;
