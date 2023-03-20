@@ -2,7 +2,9 @@ package com.konloch;
 
 import com.konloch.irc.server.data.serializer.CollectionSerializer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Used to test the API
@@ -15,6 +17,31 @@ public class SerializerTest
 	public static void main(String[] args)
 	{
 		CollectionSerializer serializer = new CollectionSerializer();
+		
+		List<String> stringList = new ArrayList<>();
+		for(int i = 0; i < 10; i++)
+			stringList.add("Name-" + i);
+		
+		//serialize
+		String stringListTest = serializer.serialize(stringList);
+		
+		System.out.println("String List Test:\n" + stringListTest);
+		
+		//TODO deserialize collections
+		
+		List<TestData> simpleDataTest = new ArrayList<>();
+		for(int i = 0; i < 10; i++)
+			simpleDataTest.add(new TestData("Account-" + i));
+		
+		//serialize
+		String simpleTest = serializer.serialize(simpleDataTest);
+		
+		System.out.println("Account List Test:\n" + simpleTest);
+		
+		//TODO deserialize collections
+		
+		if(true)
+			return;
 		
 		//build test map
 		HashMap<String, TestData> complexData = new HashMap<>();
@@ -43,7 +70,7 @@ public class SerializerTest
 		//serialize
 		String test = serializer.serialize(complexData);
 		
-		System.out.println("Test:\n" + test);
+		System.out.println("Account Map Test:\n" + test);
 		
 		HashMap<String, TestData> dataDeserialized = new HashMap<>();
 		

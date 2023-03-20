@@ -1,5 +1,6 @@
 package com.konloch.irc.server.data.serializer;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
@@ -61,7 +62,7 @@ public class CollectionSerializer
 			sb.append(value.getClass().getName()).append("=");
 			
 			if (value instanceof String)
-				sb.append(unicodeEscapeNewLineOnly((String) value)).append("\n");
+				sb.append(unicodeEscapeKeywordCharacters((String) value)).append("\n");
 			else if (value instanceof Boolean
 					|| value instanceof Byte
 					|| value instanceof Short
@@ -71,9 +72,15 @@ public class CollectionSerializer
 					|| value instanceof Float
 			)
 				sb.append(value).append("\n");
-			else if (value instanceof Enum
-			)
+			else if (value instanceof Enum)
 				sb.append(value).append("=").append("ENUM\n");
+			//TODO
+			/*else if (value instanceof Collection)
+				sb.append(value).append("=").append("COLLECTION\n");
+			else if (value instanceof Map)
+				sb.append(value).append("=").append("MAP\n");
+			else if (value instanceof Array)
+				sb.append(value).append("=").append("ARRAY\n");*/
 			else //write as non-primitive objects
 			{
 				boolean containsAnyValidFields = false;
@@ -139,7 +146,7 @@ public class CollectionSerializer
 	 * @param input any String to escape
 	 * @return String value of the escaped input
 	 */
-	public static String unicodeEscapeNewLineOnly(String input)
+	public static String unicodeEscapeKeywordCharacters(String input)
 	{
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < input.length(); i++)
