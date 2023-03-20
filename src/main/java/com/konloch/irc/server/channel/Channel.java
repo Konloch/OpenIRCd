@@ -21,9 +21,29 @@ public class Channel
 		this(null);
 	}
 	
+	public String getName()
+	{
+		return name;
+	}
+	
 	public Channel(String name)
 	{
 		this.name = name;
+	}
+	
+	public String getDescription()
+	{
+		return description;
+	}
+	
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+	
+	public long getCreatedAt()
+	{
+		return createdAt;
 	}
 	
 	public List<User> getUsers()
