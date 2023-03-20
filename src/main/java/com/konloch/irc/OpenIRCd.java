@@ -38,17 +38,17 @@ import java.util.concurrent.atomic.AtomicLong;
 public class OpenIRCd
 {
 	private final SocketServer server;
-	private final IRCProtocolDecoder decoder = new IRCProtocolDecoder();
-	private final HashMap<String, Channel> channels = new HashMap<>();
-	private final HashMap<Long, User> connected = new HashMap<>();
-	private final HashMap<String, AtomicLong> connectedMap = new HashMap<>();
+	private final IRCProtocolDecoder decoder;
+	private final HashMap<String, Channel> channels;
+	private final HashMap<Long, User> connected;
+	private final HashMap<String, AtomicLong> connectedMap;
 	private final DSL configParser;
 	private final HashMap<String, DSLRuntimeCommand> config;
-	private final EventManager events = new EventManager();
-	private final TaskManager taskManager = new TaskManager();
+	private final EventManager events;
+	private final TaskManager taskManager;
 	private final CLI cli;
+	private final int keepAlive;
 	private boolean running = true;
-	private int keepAlive;
 	
 	public static void main(String[] args) throws IOException, URISyntaxException
 	{
@@ -71,6 +71,15 @@ public class OpenIRCd
 	
 	public OpenIRCd(File configFile) throws IOException, URISyntaxException
 	{
+		//create the decoder instance
+		decoder = new IRCProtocolDecoder();
+		
+		//create the event manager instance
+		events = new EventManager();
+		
+		//create the task manager instance
+		taskManager = new TaskManager();
+		
 		//drop the default config
 		if(!configFile.exists())
 			DumpResource.dump("/config.ini", configFile);
@@ -84,26 +93,11 @@ public class OpenIRCd
 		//return the parsed config results
 		config = configParser.getRuntime().getCommands();
 		
-		String translation = fromConfig("translation");
-		
-		if(translation.equalsIgnoreCase("automatic"))
-		{
-			String userLanguage = System.getProperty("user.language");
-			String systemLanguageCode = userLanguage != null ? userLanguage.toLowerCase() : "";
-			translation = Language.getLanguageCodeLookup().getOrDefault(systemLanguageCode, Language.ENGLISH).name().toLowerCase();
-		}
-		
-		//parse base (english) translations
-		configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/english.ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
-
-		//parse non-english translations
-		if(!translation.equals("english"))
-			configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/" + translation + ".ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
+		//setup translations
+		setupTranslations();
 		
 		//insert version
 		configParser.parse(new ArrayList<>(Arrays.asList("version=" + getIRCdVersion())));
-		
-		final int maximumSimultaneousConnections = fromConfigInt("limitMaxSimultaneousConnections");
 		
 		//copy the config variables
 		keepAlive = fromConfigInt("keepAlive");
@@ -112,6 +106,13 @@ public class OpenIRCd
 		if(!getMOTDFile().exists())
 			DumpResource.dump("/MOTD.txt", getMOTDFile());
 		
+		//TODO data needs to be loaded here
+		channels = new HashMap<>();
+		
+		//init connected maps
+		connected = new HashMap<>();
+		connectedMap = new HashMap<>();
+		
 		//TODO plugins should be loaded here
 		
 		//init CLI
@@ -119,6 +120,9 @@ public class OpenIRCd
 		
 		//on boot event
 		events.getIrcEvents().forEach(IRCdListener::onIRCBoot);
+		
+		//store the maximum simultaneous connections
+		final int maximumSimultaneousConnections = fromConfigInt("limitMaxSimultaneousConnections");
 		
 		//create a new socket server
 		server = new SocketServer(fromConfigInt("port"), fromConfigInt("threads"),
@@ -266,6 +270,25 @@ public class OpenIRCd
 		
 		//shutdown hook to fire irc stop events
 		Runtime.getRuntime().addShutdownHook(new Thread(()-> events.getIrcEvents().forEach(IRCdListener::onIRCStop)));
+	}
+	
+	private void setupTranslations()
+	{
+		String translation = fromConfig("translation");
+		
+		if(translation.equalsIgnoreCase("automatic"))
+		{
+			String userLanguage = System.getProperty("user.language");
+			String systemLanguageCode = userLanguage != null ? userLanguage.toLowerCase() : "";
+			translation = Language.getLanguageCodeLookup().getOrDefault(systemLanguageCode, Language.ENGLISH).name().toLowerCase();
+		}
+		
+		//parse base (english) translations
+		configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/english.ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
+		
+		//parse non-english translations
+		if(!translation.equals("english"))
+			configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/" + translation + ".ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
 	}
 	
 	public Collection<User> getUsers()
