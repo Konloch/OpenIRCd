@@ -1,6 +1,5 @@
 package com.konloch.irc.server.data.serializer;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
@@ -17,7 +16,7 @@ import java.util.Map;
  * @author Konloch
  * @since 3/20/2023
  */
-public class CollectionSerializer
+public class CollectionsSerializer
 {
 	public String serialize(Map<?, ?> map)
 	{
@@ -136,7 +135,7 @@ public class CollectionSerializer
 	
 	public void deserializeHashMap(String s, HashMap map)
 	{
-		CollectionDeserializer deserializer = new CollectionDeserializer(s);
+		CollectionsDeserializer deserializer = new CollectionsDeserializer(s);
 		deserializer.deserializeHashMap(map);
 	}
 	

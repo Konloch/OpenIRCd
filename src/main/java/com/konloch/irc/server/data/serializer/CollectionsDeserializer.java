@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * @author Konloch
  * @since 3/20/2023
  */
-class CollectionDeserializer
+class CollectionsDeserializer
 {
 	private final String[] lines;
 	private String keyClass;
@@ -33,7 +33,7 @@ class CollectionDeserializer
 	private final ArrayList<StringBuilder> childDynamicBuilds = new ArrayList<>();
 	private int childDynamicBuildIndex = -1;
 	
-	CollectionDeserializer(String lines)
+	CollectionsDeserializer(String lines)
 	{
 		this.lines = FastStringUtils.split(lines, "\n");
 	}
@@ -77,7 +77,7 @@ class CollectionDeserializer
 					sb.append(line).append("\n");
 					
 					//create new deserializer instance
-					CollectionDeserializer deserializer = new CollectionDeserializer(sb.toString());
+					CollectionsDeserializer deserializer = new CollectionsDeserializer(sb.toString());
 					deserializer.readingKey = false;
 					deserializer.deserializeHashMap(null);
 					
@@ -198,7 +198,7 @@ class CollectionDeserializer
 					
 					try
 					{
-						dynamicBuild = CollectionSerializer.class.getClassLoader().loadClass(classValue[0]).newInstance();
+						dynamicBuild = CollectionsSerializer.class.getClassLoader().loadClass(classValue[0]).newInstance();
 						
 						valueIsObject = true;
 					}

@@ -1,6 +1,6 @@
 package com.konloch;
 
-import com.konloch.irc.server.data.serializer.CollectionSerializer;
+import com.konloch.irc.server.data.serializer.CollectionsSerializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ public class SerializerTest
 {
 	public static void main(String[] args)
 	{
-		CollectionSerializer serializer = new CollectionSerializer();
+		CollectionsSerializer serializer = new CollectionsSerializer();
 		
 		List<String> stringList = new ArrayList<>();
 		for(int i = 0; i < 10; i++)
