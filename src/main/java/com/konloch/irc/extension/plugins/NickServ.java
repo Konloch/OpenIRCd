@@ -277,16 +277,16 @@ public class NickServ implements Plugin
 	
 	public static class NSUserData
 	{
-		private String passwordSHA256;
-		private String email;
-		private NSPermission permission = USER;
+		public String passwordSHA256;
+		public String email;
+		public NSPermission permission = USER;
 	}
 	
 	public static class NSAttempts
 	{
-		private int loginAttempts;
-		private long loginAttemptsStarted;
-		private long loginAttemptsLast;
+		public int loginAttempts;
+		public long loginAttemptsStarted;
+		public long loginAttemptsLast;
 	}
 	
 	public enum NSPermission

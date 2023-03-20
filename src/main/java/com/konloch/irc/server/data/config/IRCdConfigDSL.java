@@ -1,4 +1,4 @@
-package com.konloch.irc.server.config;
+package com.konloch.irc.server.data.config;
 
 import com.konloch.dsl.DSL;
 

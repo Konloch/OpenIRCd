@@ -2,8 +2,8 @@ package com.konloch.irc.extension.cli;
 
 import com.konloch.irc.OpenIRCd;
 import com.konloch.irc.extension.Plugin;
-import com.konloch.irc.server.command.Command;
-import com.konloch.irc.server.command.CommandArgument;
+import com.konloch.irc.server.util.cli.Command;
+import com.konloch.irc.server.util.cli.CommandArgument;
 
 /**
  * @author Konloch

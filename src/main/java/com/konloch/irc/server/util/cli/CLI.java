@@ -1,4 +1,4 @@
-package com.konloch.irc.server.command;
+package com.konloch.irc.server.util.cli;
 
 import java.util.ArrayList;
 

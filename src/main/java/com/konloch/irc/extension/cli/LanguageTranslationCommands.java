@@ -2,8 +2,8 @@ package com.konloch.irc.extension.cli;
 
 import com.konloch.irc.OpenIRCd;
 import com.konloch.irc.extension.Plugin;
-import com.konloch.irc.server.command.Command;
-import com.konloch.irc.server.translation.Language;
+import com.konloch.irc.server.util.cli.Command;
+import com.konloch.irc.server.data.translation.Language;
 import com.konloch.irc.server.util.ReadResource;
 
 import java.nio.charset.StandardCharsets;

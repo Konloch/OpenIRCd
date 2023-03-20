@@ -1,4 +1,4 @@
-package com.konloch.irc.server.translation;
+package com.konloch.irc.server.data.translation;
 
 import java.util.*;
 
