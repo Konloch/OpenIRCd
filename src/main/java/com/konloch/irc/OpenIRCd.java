@@ -16,6 +16,7 @@ import com.konloch.irc.server.client.User;
 import com.konloch.irc.server.client.UserBuffer;
 import com.konloch.irc.server.command.CLI;
 import com.konloch.irc.server.config.IRCdConfigDSL;
+import com.konloch.irc.server.data.IRCdDB;
 import com.konloch.irc.server.translation.Language;
 import com.konloch.irc.server.util.DumpResource;
 import com.konloch.irc.server.util.ReadResource;
@@ -39,9 +40,7 @@ public class OpenIRCd
 {
 	private final SocketServer server;
 	private final IRCProtocolDecoder decoder;
-	private final HashMap<String, Channel> channels;
-	private final HashMap<Long, User> connected;
-	private final HashMap<String, AtomicLong> connectedMap;
+	private final IRCdDB db;
 	private final DSL configParser;
 	private final HashMap<String, DSLRuntimeCommand> config;
 	private final EventManager events;
@@ -106,12 +105,8 @@ public class OpenIRCd
 		if(!getMOTDFile().exists())
 			DumpResource.dump("/MOTD.txt", getMOTDFile());
 		
-		//TODO data needs to be loaded here
-		channels = new HashMap<>();
-		
-		//init connected maps
-		connected = new HashMap<>();
-		connectedMap = new HashMap<>();
+		//todo data should be loaded here
+		db = new IRCdDB(this);
 		
 		//TODO plugins should be loaded here
 		
@@ -131,12 +126,12 @@ public class OpenIRCd
 		client ->
 		{
 			//only allow X simultaneous connections
-			if(connectedMap.containsKey(client.getRemoteAddress()))
-				return connectedMap.get(client.getRemoteAddress()).incrementAndGet() <= maximumSimultaneousConnections;
+			if(getConnectedMap().containsKey(client.getRemoteAddress()))
+				return getConnectedMap().get(client.getRemoteAddress()).incrementAndGet() <= maximumSimultaneousConnections;
 			else
 			{
 				//no other simultaneous connections
-				connectedMap.put(client.getRemoteAddress(), new AtomicLong(1));
+				getConnectedMap().put(client.getRemoteAddress(), new AtomicLong(1));
 				return true;
 			}
 		},
@@ -242,10 +237,10 @@ public class OpenIRCd
 				e.printStackTrace();
 			}
 			
-			connected.remove(client.getUID());
+			getConnected().remove(client.getUID());
 			
-			if(connectedMap.get(client.getRemoteAddress()).decrementAndGet() <= 0)
-				connectedMap.remove(client.getRemoteAddress());
+			if(getConnectedMap().get(client.getRemoteAddress()).decrementAndGet() <= 0)
+				getConnectedMap().remove(client.getRemoteAddress());
 		});
 		
 		//set the serer timeout
@@ -293,15 +288,15 @@ public class OpenIRCd
 	
 	public Collection<User> getUsers()
 	{
-		return connected.values();
+		return getConnected().values();
 	}
 	
 	public User getUser(SocketClient client)
 	{
-		if(!connected.containsKey(client.getUID()))
-			connected.put(client.getUID(), new User(this, client));
+		if(!getConnected().containsKey(client.getUID()))
+			getConnected().put(client.getUID(), new User(this, client));
 		
-		return connected.get(client.getUID());
+		return getConnected().get(client.getUID());
 	}
 	
 	public User getUser(String nick)
@@ -357,17 +352,17 @@ public class OpenIRCd
 	
 	public HashMap<String, Channel> getChannels()
 	{
-		return channels;
+		return db.getChannels();
 	}
 	
 	public HashMap<Long, User> getConnected()
 	{
-		return connected;
+		return db.getConnected();
 	}
 	
 	public HashMap<String, AtomicLong> getConnectedMap()
 	{
-		return connectedMap;
+		return db.getConnectedMap();
 	}
 	
 	public HashMap<String, DSLRuntimeCommand> getConfig()

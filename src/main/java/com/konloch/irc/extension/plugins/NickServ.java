@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import com.konloch.irc.OpenIRCd;
 import com.konloch.irc.extension.Plugin;
+import com.konloch.irc.extension.events.listeners.IRCdAdapter;
 import com.konloch.irc.extension.events.listeners.IRCdUserAdapter;
 import com.konloch.irc.protocol.encoder.messages.IRCOpcodes;
 import com.konloch.irc.server.client.User;
@@ -22,12 +23,26 @@ public class NickServ implements Plugin
 	private static final Object LOCK = new Object();
 	private static final String nickServName = "NickServ";
 	private static final String nickServIdentifier = "NickServ!NickServ@";
-	private final HashMap<String, NSUserData> registry = new HashMap<>();
-	private final HashMap<String, NSAttempts> attemptLogs = new HashMap<>();
+	private HashMap<String, NSUserData> registry;
+	private HashMap<String, NSAttempts> attemptLogs;
 	
 	@Override
 	public void install(OpenIRCd irc)
 	{
+		//TODO load
+		registry = new HashMap<>();
+		attemptLogs = new HashMap<>();
+		
+		irc.getEvents().getIrcEvents().add(new IRCdAdapter()
+		{
+			@Override
+			public void onIRCStop()
+			{
+				save();
+			}
+		});
+		
+		
 		final ArrayList<String> removeList = new ArrayList<>();
 		irc.getTaskManager().delayLoop(1000, (task)->
 		{
@@ -227,6 +242,11 @@ public class NickServ implements Plugin
 				return !isNickRegistered || user.isFlagHasAuthorizedNick();
 			}
 		});
+	}
+	
+	private void save()
+	{
+	
 	}
 	
 	public void sendMessage(User user, String message)
