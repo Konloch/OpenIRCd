@@ -134,7 +134,7 @@ public class CollectionSerializer
 	}
 	
 	/**
-	 * Unicode escape only new line breaks (windows) for any string
+	 * Unicode escape only new line breaks for any string
 	 *
 	 * @param input any String to escape
 	 * @return String value of the escaped input
@@ -146,13 +146,17 @@ public class CollectionSerializer
 		{
 			char c = input.charAt(i);
 			
-			if(c != '\n')
+			switch(c)
 			{
-				sb.append(c);
-				continue;
+				case '\n':
+				case '\r':
+					sb.append(unicodeEscape(c));
+					break;
+					
+				default:
+					sb.append(c);
+					break;
 			}
-			
-			sb.append(unicodeEscape(c));
 		}
 		return sb.toString();
 	}
