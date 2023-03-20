@@ -11,6 +11,8 @@ import com.konloch.irc.protocol.encoder.messages.IRCOpcodes;
 import com.konloch.irc.server.client.User;
 import com.konloch.irc.server.util.Checksum;
 
+import static com.konloch.irc.extension.plugins.NickServ.NSPermission.USER;
+
 /**
  * @author Konloch
  * @since 3/5/2023
@@ -257,6 +259,7 @@ public class NickServ implements Plugin
 	{
 		private String passwordSHA256;
 		private String email;
+		private NSPermission permission = USER;
 	}
 	
 	public static class NSAttempts
@@ -264,5 +267,11 @@ public class NickServ implements Plugin
 		private int loginAttempts;
 		private long loginAttemptsStarted;
 		private long loginAttemptsLast;
+	}
+	
+	public enum NSPermission
+	{
+		USER,
+		OP,
 	}
 }
