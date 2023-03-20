@@ -16,6 +16,11 @@ public class Channel
 	private long createdAt = System.currentTimeMillis();
 	private transient List<User> users = new ArrayList<>();
 	
+	public Channel()
+	{
+		this(null);
+	}
+	
 	public Channel(String name)
 	{
 		this.name = name;
