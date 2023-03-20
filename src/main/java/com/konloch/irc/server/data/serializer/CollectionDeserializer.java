@@ -13,25 +13,25 @@ import java.util.LinkedList;
  */
 class CollectionDeserializer
 {
-	final String[] lines;
-	String keyClass;
-	String keyValue = null;
+	private final String[] lines;
+	private String keyClass;
+	private String keyValue = null;
 	
-	String valueVariableName;
-	String valueClass;
-	String valueValue;
+	private String valueVariableName;
+	private String valueClass;
+	private String valueValue;
 	
-	Object dynamicBuild = null;
+	private Object dynamicBuild = null;
 	
-	boolean readingKey = true;
-	boolean keyIsObject = false;
-	boolean valueIsObject = false;
+	private boolean readingKey = true;
+	private boolean keyIsObject = false;
+	private boolean valueIsObject = false;
 	
-	ArrayList<Object> parents = new ArrayList<>();
-	LinkedList<Object> builtInstances = new LinkedList<>();
-	ArrayList<String> childValueVariableNames = new ArrayList<>();
-	ArrayList<StringBuilder> childDynamicBuilds = new ArrayList<>();
-	int childDynamicBuildIndex = -1;
+	private final ArrayList<Object> parents = new ArrayList<>();
+	private final LinkedList<Object> builtInstances = new LinkedList<>();
+	private final ArrayList<String> childValueVariableNames = new ArrayList<>();
+	private final ArrayList<StringBuilder> childDynamicBuilds = new ArrayList<>();
+	private int childDynamicBuildIndex = -1;
 	
 	CollectionDeserializer(String lines)
 	{
