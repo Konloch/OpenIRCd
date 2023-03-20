@@ -319,6 +319,7 @@ public class OpenIRCd
 	public void stop()
 	{
 		server.stopSocketServer();
+		running = false;
 	}
 	
 	public int getKeepAlive()
