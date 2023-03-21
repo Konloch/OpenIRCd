@@ -13,7 +13,7 @@ import com.konloch.irc.server.client.User;
  * @author Konloch
  * @since 3/3/2023
  */
-public class SetNick implements ProtocolMessage
+public class SETNICK implements ProtocolMessage
 {
 	public static final Object LOCK = new Object();
 	

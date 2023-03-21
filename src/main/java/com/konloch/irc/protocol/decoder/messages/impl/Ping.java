@@ -9,7 +9,7 @@ import com.konloch.irc.server.client.User;
  * @author Konloch
  * @since 3/3/2023
  */
-public class Ping implements ProtocolMessage
+public class PING implements ProtocolMessage
 {
 	@Override
 	public void run(User user, String msgVal)

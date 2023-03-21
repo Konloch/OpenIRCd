@@ -13,7 +13,7 @@ import com.konloch.util.FastStringUtils;
  * @author Konloch
  * @since 3/3/2023
  */
-public class Join implements ProtocolMessage
+public class JOIN implements ProtocolMessage
 {
 	public static final Object CREATE_CHANNEL_LOCK = new Object();
 	

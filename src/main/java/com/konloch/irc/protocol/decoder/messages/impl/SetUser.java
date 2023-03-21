@@ -12,7 +12,7 @@ import com.konloch.util.FastStringUtils;
  * @author Konloch
  * @since 3/3/2023
  */
-public class SetUser implements ProtocolMessage
+public class SETUSER implements ProtocolMessage
 {
 	@Override
 	public void run(User user, String msgVal)

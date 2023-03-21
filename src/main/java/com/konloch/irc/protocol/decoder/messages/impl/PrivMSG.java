@@ -9,7 +9,7 @@ import com.konloch.irc.server.client.User;
  * @author Konloch
  * @since 3/3/2023
  */
-public class PrivMSG implements ProtocolMessage
+public class PRIVMSG implements ProtocolMessage
 {
 	@Override
 	public void run(User user, String msgVal)

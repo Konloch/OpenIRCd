@@ -1,6 +1,5 @@
 package com.konloch.irc.protocol.decoder.messages.impl;
 
-import static com.konloch.irc.protocol.encoder.messages.IRCOpcodes.RPL_JOIN;
 import static com.konloch.irc.protocol.encoder.messages.IRCOpcodes.RPL_PART;
 
 import com.konloch.irc.extension.events.listeners.IRCdUserListener;
@@ -14,7 +13,7 @@ import com.konloch.util.FastStringUtils;
  * @author Konloch
  * @since 3/3/2023
  */
-public class Part implements ProtocolMessage
+public class PART implements ProtocolMessage
 {
 	@Override
 	public void run(User user, String msgVal)
