@@ -27,15 +27,16 @@ java -jar OpenIRCd-v0.1.0.jar
 
 ## Implementation Progress
 + `IRC v1` is the target but certain `IRC v3 extensions` are planned to be supported ([SASL](https://ircv3.net/specs/extensions/sasl-3.1))
-+ Configuration is done and supports variables
-+ Command base with CLI is done
-+ Core protocol decoding and encoding is done
-+ Core API has been started and is partially finished
-+ Temporary channels are done but persistent channels with permissions have not been started
-+ NickServ / authorization has been started
-+ User modes aren't started
-+ Channel modes aren't started
-+ Plugins / event system has been started
++ **Configuration** is done
++ **CLI** is done
++ **Protocol Decoding / Encoding** is done
++ **Core API** is started
++ **Object Serialization** is started / partially finished
++ **Channel Functionality** is done, missing permissions
++ **NickServ / Authorization** is started
++ **User Modes** not started
++ **Channel Modes** not started
++ **Plugins / Event System** is done but external plugins are not finished
 
 ## Links
 * [Website](https://konloch.com/OpenIRCd/)
