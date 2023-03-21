@@ -6,7 +6,20 @@ package com.konloch.irc.server.client.data;
  */
 public enum PermissionUserGroup
 {
-	USER,
-	LOCAL_OPERATOR,
-	GLOBAL_OPERATOR,
+	USER("user"),
+	LOCAL_OPERATOR("local operator"),
+	GLOBAL_OPERATOR("global operator"),
+	;
+	
+	private final String title;
+	
+	PermissionUserGroup(String title)
+	{
+		this.title = title;
+	}
+	
+	public String getTitle()
+	{
+		return title;
+	}
 }
