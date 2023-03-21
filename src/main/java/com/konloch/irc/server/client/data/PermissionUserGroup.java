@@ -7,5 +7,6 @@ package com.konloch.irc.server.client.data;
 public enum PermissionUserGroup
 {
 	USER,
-	OP,
+	LOCAL_OPERATOR,
+	GLOBAL_OPERATOR,
 }
