@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>com.konloch</groupId>
 			<artifactId>Socket-Server</artifactId>
-			<version>0.9.4</version>
+			<version>0.9.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.konloch</groupId>
