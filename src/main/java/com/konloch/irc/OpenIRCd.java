@@ -4,7 +4,7 @@ import com.konloch.dsl.DSL;
 import com.konloch.dsl.runtime.DSLRuntimeCommand;
 import com.konloch.irc.extension.cli.HelpCommand;
 import com.konloch.irc.extension.cli.LanguageTranslationCommands;
-import com.konloch.irc.extension.cli.OPCommand;
+import com.konloch.irc.extension.cli.OPCommands;
 import com.konloch.irc.extension.events.EventManager;
 import com.konloch.irc.extension.events.listeners.IRCdListener;
 import com.konloch.irc.extension.plugins.ConnectionNotice;
@@ -247,7 +247,7 @@ public class OpenIRCd
 		server.setTimeout(fromConfigInt("timeout"));
 		
 		//install CLI commands
-		new OPCommand().install(this);
+		new OPCommands().install(this);
 		new LanguageTranslationCommands().install(this);
 		new HelpCommand().install(this);
 		

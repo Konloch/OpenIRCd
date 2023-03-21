@@ -12,7 +12,7 @@ import static com.konloch.irc.server.client.data.PermissionUserGroup.*;
  * @author Konloch
  * @since 3/18/2023
  */
-public class OPCommand implements Plugin
+public class OPCommands implements Plugin
 {
 	private OpenIRCd irc;
 	
