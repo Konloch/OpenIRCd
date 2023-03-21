@@ -24,4 +24,17 @@ public class CommandInstance
 	{
 		return arguments;
 	}
+	
+	public String asString(int fromIndex)
+	{
+		StringBuilder sb = new StringBuilder();
+		for(int i = fromIndex; i < getArguments().length; i++)
+		{
+			if(i >= fromIndex + 1)
+				sb.append(" ");
+			sb.append(getArguments()[i]);
+		}
+		
+		return sb.toString();
+	}
 }
