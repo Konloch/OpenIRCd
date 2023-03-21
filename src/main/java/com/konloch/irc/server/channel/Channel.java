@@ -12,9 +12,10 @@ import com.konloch.irc.server.client.User;
 public class Channel
 {
 	private final String name;
+	private String topic;
 	private String description;
-	private long createdAt = System.currentTimeMillis();
-	private transient List<User> users = new ArrayList<>();
+	private final long createdAt = System.currentTimeMillis();
+	private final transient List<User> users = new ArrayList<>();
 	
 	public Channel()
 	{
@@ -29,6 +30,16 @@ public class Channel
 	public Channel(String name)
 	{
 		this.name = name;
+	}
+	
+	public String getTopic()
+	{
+		return topic;
+	}
+	
+	public void setTopic(String topic)
+	{
+		this.topic = topic;
 	}
 	
 	public String getDescription()
