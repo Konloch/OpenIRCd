@@ -10,9 +10,8 @@ import com.konloch.irc.extension.events.listeners.IRCdAdapter;
 import com.konloch.irc.extension.events.listeners.IRCdUserAdapter;
 import com.konloch.irc.protocol.encoder.messages.IRCOpcodes;
 import com.konloch.irc.server.client.User;
+import com.konloch.irc.server.client.data.UserData;
 import com.konloch.irc.server.util.Checksum;
-
-import static com.konloch.irc.extension.plugins.NickServ.NSPermission.USER;
 
 /**
  * @author Konloch
@@ -23,14 +22,13 @@ public class NickServ implements Plugin
 	private static final Object LOCK = new Object();
 	private static final String nickServName = "NickServ";
 	private static final String nickServIdentifier = "NickServ!NickServ@";
-	private HashMap<String, NSUserData> registry;
+	private OpenIRCd irc;
 	private HashMap<String, NSAttempts> attemptLogs;
 	
 	@Override
 	public void install(OpenIRCd irc)
 	{
-		//TODO load
-		registry = new HashMap<>();
+		this.irc = irc;
 		attemptLogs = new HashMap<>();
 		
 		irc.getEvents().getIrcEvents().add(new IRCdAdapter()
@@ -84,7 +82,7 @@ public class NickServ implements Plugin
 			@Override
 			public boolean onChangeNick(User user, String nick)
 			{
-				if(registry.containsKey(user.getNick().toLowerCase()))
+				if(irc.getDb().getRegisteredUsers().containsKey(user.getNick().toLowerCase()))
 				{
 					//send registered
 					user.getEncoder().sendNotice(irc.fromConfig("registered"));
@@ -164,12 +162,12 @@ public class NickServ implements Plugin
 								try
 								{
 									//build the nick storage data
-									NSUserData data = new NSUserData();
-									data.email = email;
-									data.passwordSHA256 = Checksum.sha256(password);
+									UserData data = new UserData();
+									data.setEmail(email);
+									data.setPasswordSHA256(Checksum.sha256(password));
 									
 									//store the nick
-									registry.put(nick, data);
+									irc.getDb().getRegisteredUsers().put(nick, data);
 									
 									//set as authorized
 									user.setFlagHasAuthorizedNick(true);
@@ -202,7 +200,8 @@ public class NickServ implements Plugin
 							boolean validPassword = false;
 							try
 							{
-								if(registry.get(nick).passwordSHA256.equals(Checksum.sha256(password)))
+								if(irc.getDb().getRegisteredUsers().get(nick).getPasswordSHA256()
+										.equals(Checksum.sha256(password)))
 									validPassword = true;
 							}
 							catch (NoSuchAlgorithmException e)
@@ -272,14 +271,7 @@ public class NickServ implements Plugin
 	
 	public boolean isNickRegistered(String nick)
 	{
-		return registry.containsKey(nick);
-	}
-	
-	public static class NSUserData
-	{
-		public String passwordSHA256;
-		public String email;
-		public NSPermission permission = USER;
+		return irc.getDb().getRegisteredUsers().containsKey(nick);
 	}
 	
 	public static class NSAttempts
@@ -287,11 +279,5 @@ public class NickServ implements Plugin
 		public int loginAttempts;
 		public long loginAttemptsStarted;
 		public long loginAttemptsLast;
-	}
-	
-	public enum NSPermission
-	{
-		USER,
-		OP,
 	}
 }

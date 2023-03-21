@@ -350,6 +350,11 @@ public class OpenIRCd
 		return server;
 	}
 	
+	public IRCdDB getDb()
+	{
+		return db;
+	}
+	
 	public HashMap<String, Channel> getChannels()
 	{
 		return db.getChannels();

@@ -6,6 +6,7 @@ import com.konloch.irc.OpenIRCd;
 import com.konloch.irc.extension.events.listeners.IRCdAdapter;
 import com.konloch.irc.server.channel.Channel;
 import com.konloch.irc.server.client.User;
+import com.konloch.irc.server.client.data.UserData;
 import com.konloch.irc.server.data.serializer.CollectionsSerializer;
 
 import java.io.File;
@@ -23,16 +24,19 @@ public class IRCdDB
 	private final OpenIRCd irc;
 	private final CollectionsSerializer serializer;
 	private final HashMap<String, Channel> channels;
+	private final HashMap<String, UserData> registeredUsers;
 	private final transient HashMap<Long, User> connected;
 	private final transient HashMap<String, AtomicLong> connectedMap;
 	private final File channelsFile;
+	private final File usersFile;
 	
 	public IRCdDB(OpenIRCd irc)
 	{
 		this.irc = irc;
 		
-		//definte the channels file
+		//define the various files
 		channelsFile = new File("channels.db");
+		usersFile = new File("users.db");
 		
 		//create a new serializer
 		serializer = new CollectionsSerializer();
@@ -46,6 +50,22 @@ public class IRCdDB
 			try
 			{
 				serializer.deserializeHashMap(GZipDiskReader.readString(channelsFile), channels);
+			}
+			catch (IOException | DataFormatException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		//create a new hashmap for the users
+		registeredUsers = new HashMap<>();
+		
+		//load the previously saved channels data if it exists
+		if(usersFile.exists())
+		{
+			try
+			{
+				serializer.deserializeHashMap(GZipDiskReader.readString(usersFile), registeredUsers);
 			}
 			catch (IOException | DataFormatException e)
 			{
@@ -73,6 +93,7 @@ public class IRCdDB
 		try
 		{
 			GZipDiskWriter.write(channelsFile, serializer.serialize(channels));
+			GZipDiskWriter.write(usersFile, serializer.serialize(registeredUsers));
 		}
 		catch (IOException e)
 		{
@@ -83,6 +104,11 @@ public class IRCdDB
 	public HashMap<String, Channel> getChannels()
 	{
 		return channels;
+	}
+	
+	public HashMap<String, UserData> getRegisteredUsers()
+	{
+		return registeredUsers;
 	}
 	
 	public HashMap<String, AtomicLong> getConnectedMap()
