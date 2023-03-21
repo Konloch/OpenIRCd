@@ -82,7 +82,7 @@ public class NickServ implements Plugin
 			@Override
 			public boolean onChangeNick(User user, String nick)
 			{
-				if(irc.getDb().getRegisteredUsers().containsKey(user.getNick().toLowerCase()))
+				if(irc.getDB().getRegisteredUsers().containsKey(user.getNick().toLowerCase()))
 				{
 					//send registered
 					user.getEncoder().sendNotice(irc.fromConfig("registered"));
@@ -167,7 +167,7 @@ public class NickServ implements Plugin
 									data.setPasswordSHA256(Checksum.sha256(password));
 									
 									//store the nick
-									irc.getDb().getRegisteredUsers().put(nick, data);
+									irc.getDB().getRegisteredUsers().put(nick, data);
 									
 									//set as authorized
 									user.setFlagHasAuthorizedNick(true);
@@ -200,7 +200,7 @@ public class NickServ implements Plugin
 							boolean validPassword = false;
 							try
 							{
-								if(irc.getDb().getRegisteredUsers().get(nick).getPasswordSHA256()
+								if(irc.getDB().getRegisteredUsers().get(nick).getPasswordSHA256()
 										.equals(Checksum.sha256(password)))
 									validPassword = true;
 							}
@@ -271,7 +271,7 @@ public class NickServ implements Plugin
 	
 	public boolean isNickRegistered(String nick)
 	{
-		return irc.getDb().getRegisteredUsers().containsKey(nick);
+		return irc.getDB().getRegisteredUsers().containsKey(nick);
 	}
 	
 	public static class NSAttempts

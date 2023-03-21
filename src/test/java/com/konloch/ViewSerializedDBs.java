@@ -18,19 +18,19 @@ public class ViewSerializedDBs
 	{
 		OpenIRCd irc = new OpenIRCd(new File("./config.ini"));
 		
-		System.out.println("Registered Nicks: " + irc.getDb().getRegisteredUsers().size());
-		for(String nick : irc.getDb().getRegisteredUsers().keySet())
+		System.out.println("Registered Nicks: " + irc.getDB().getRegisteredUsers().size());
+		for(String nick : irc.getDB().getRegisteredUsers().keySet())
 		{
-			UserData data = irc.getDb().getRegisteredUsers().get(nick);
+			UserData data = irc.getDB().getRegisteredUsers().get(nick);
 			
 			System.out.println("\t+ " + nick + " - " + data.getUsergroup() + " - " + data.getEmail());
 		}
 		
 		System.out.println();
-		System.out.println("Registered Channels: " + irc.getDb().getChannels().size());
-		for(String channel : irc.getDb().getChannels().keySet())
+		System.out.println("Registered Channels: " + irc.getDB().getChannels().size());
+		for(String channel : irc.getDB().getChannels().keySet())
 		{
-			Channel data = irc.getDb().getChannels().get(channel);
+			Channel data = irc.getDB().getChannels().get(channel);
 			
 			System.out.println("\t+ " + channel + " - " + data.getDescription());
 		}

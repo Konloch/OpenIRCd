@@ -350,7 +350,7 @@ public class OpenIRCd
 		return server;
 	}
 	
-	public IRCdDB getDb()
+	public IRCdDB getDB()
 	{
 		return db;
 	}
