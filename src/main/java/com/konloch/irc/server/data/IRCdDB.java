@@ -45,7 +45,6 @@ public class IRCdDB
 		{
 			try
 			{
-				System.out.println("IM CURIOUS: " + GZipDiskReader.readString(channelsFile));
 				serializer.deserializeHashMap(GZipDiskReader.readString(channelsFile), channels);
 			}
 			catch (IOException | DataFormatException e)
