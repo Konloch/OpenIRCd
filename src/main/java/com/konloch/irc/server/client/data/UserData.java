@@ -1,6 +1,6 @@
 package com.konloch.irc.server.client.data;
 
-import static com.konloch.irc.server.client.data.UserPermissionGroup.USER;
+import static com.konloch.irc.server.client.data.PermissionUserGroup.USER;
 
 /**
  * @author Konloch
@@ -11,7 +11,7 @@ public class UserData
 	private String nick;
 	private String passwordSHA256;
 	private String email;
-	private UserPermissionGroup permission = USER;
+	private PermissionUserGroup usergroup = USER;
 	
 	public String getNick()
 	{
@@ -43,13 +43,13 @@ public class UserData
 		this.email = email;
 	}
 	
-	public UserPermissionGroup getPermission()
+	public PermissionUserGroup getUsergroup()
 	{
-		return permission;
+		return usergroup;
 	}
 	
-	public void setPermission(UserPermissionGroup permission)
+	public void setUsergroup(PermissionUserGroup usergroup)
 	{
-		this.permission = permission;
+		this.usergroup = usergroup;
 	}
 }
