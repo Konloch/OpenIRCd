@@ -24,4 +24,14 @@ public enum UserModes
 		this.mode = mode;
 		this.description = description;
 	}
+	
+	public String getMode()
+	{
+		return mode;
+	}
+	
+	public String getDescription()
+	{
+		return description;
+	}
 }
