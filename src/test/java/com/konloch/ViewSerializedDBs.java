@@ -23,7 +23,7 @@ public class ViewSerializedDBs
 		{
 			UserData data = irc.getDb().getRegisteredUsers().get(nick);
 			
-			System.out.println("\t+ " + nick + " - " + data.getEmail());
+			System.out.println("\t+ " + nick + " - " + data.getUsergroup() + " - " + data.getEmail());
 		}
 		
 		System.out.println();
