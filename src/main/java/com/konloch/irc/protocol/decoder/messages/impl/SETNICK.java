@@ -63,6 +63,9 @@ public class SETNICK implements ProtocolMessage
 				return;
 			}
 			
+			//no longer authorized as nick has changed
+			user.setFlagHasAuthorizedNick(false);
+			
 			//set the users nick
 			user.setNick(nick);
 			
