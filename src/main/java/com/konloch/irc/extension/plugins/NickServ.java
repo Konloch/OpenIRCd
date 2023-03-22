@@ -119,6 +119,17 @@ public class NickServ implements Plugin
 			}
 			
 			@Override
+			public boolean onJoinChannel(User user, String channel)
+			{
+				//prevent joining channels if you are not registered yet
+				if(irc.getDB().getRegisteredUsers().containsKey(user.getNick().toLowerCase())
+						&& !user.isFlagHasAuthorizedNick())
+					return false;
+				
+				return true;
+			}
+			
+			@Override
 			public boolean onChannelMessage(User user, String channel, String message)
 			{
 				final String nick = user.getNick();
