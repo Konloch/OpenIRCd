@@ -30,13 +30,21 @@ public interface IRCdUserListener
 	boolean onProtocolMessageSent(User user, String message);
 	
 	/**
-	 * Called whenever a user changes their nick, return false to cancel the action
+	 * Called whenever a user changes their nick, before the action is processed, return false to cancel the action
 	 *
 	 * @param user the user who this event belongs to
 	 * @param nick the nick sent to be changed to
 	 * @return false to cancel the action
 	 */
-	boolean onChangeNick(User user, String nick);
+	boolean canChangeNick(User user, String nick);
+	
+	/**
+	 * Called whenever a user changes their nick
+	 *
+	 * @param user the user who this event belongs to
+	 * @param nick the nick sent to be changed to
+	 */
+	void onChangeNick(User user, String nick);
 	
 	/**
 	 * Called when the initial user message is sent, return false to cancel the action

@@ -79,7 +79,14 @@ public class NickServ implements Plugin
 			}
 			
 			@Override
-			public boolean onChangeNick(User user, String nick)
+			public boolean canChangeNick(User user, String nick)
+			{
+				//block setting nickServ as a nick
+				return !nick.equalsIgnoreCase(nickServName);
+			}
+			
+			@Override
+			public void onChangeNick(User user, String nick)
 			{
 				if(irc.getDB().getRegisteredUsers().containsKey(nick.toLowerCase()))
 				{
@@ -103,9 +110,6 @@ public class NickServ implements Plugin
 					//send unregistered
 					user.getEncoder().sendNotice(irc.fromConfig("unregistered"));
 				}
-				
-				//block setting nickServ as a nick
-				return !nick.equalsIgnoreCase(nickServName);
 			}
 			
 			@Override

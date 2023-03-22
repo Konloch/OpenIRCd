@@ -26,7 +26,7 @@ public class SETNICK implements ProtocolMessage
 		//TODO check if msg val is ascii
 		
 		for(IRCdUserListener listener : user.getIRC().getEvents().getUserEvents())
-			if(!listener.onChangeNick(user, msgVal))
+			if(!listener.canChangeNick(user, msgVal))
 				return;
 		
 		final String nick = msgVal.trim();
@@ -49,7 +49,11 @@ public class SETNICK implements ProtocolMessage
 			
 			if(!user.isFlagHasSetInitialNick())
 				user.setFlagHasSetInitialNick(true);
-				
+			
+			//call on the on changed event
+			for(IRCdUserListener listener : user.getIRC().getEvents().getUserEvents())
+				listener.onChangeNick(user, msgVal);
+			
 			//send the welcome message
 			user.getEncoder().newServerUserMessage()
 					.opcode(RPL_WELCOME)
