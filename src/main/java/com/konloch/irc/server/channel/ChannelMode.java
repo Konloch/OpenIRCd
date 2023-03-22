@@ -4,7 +4,7 @@ package com.konloch.irc.server.channel;
  * @author Konloch
  * @since 3/21/2023
  */
-public enum ChannelModes
+public enum ChannelMode
 {
 	CHANNEL_BAN("b", "Takes a mask as a parameter. Users matching the mask are prevented from joining or speaking."),
 	CHANNEL_BAN_EXEMPTION("e", "Takes a mask as a parameter. Ban exemption matches override +b and +q bans for all clients it matches."),
@@ -38,12 +38,12 @@ public enum ChannelModes
 	private final String description;
 	private final boolean restricted;
 	
-	ChannelModes(String mode, String description)
+	ChannelMode(String mode, String description)
 	{
 		this(mode, description, false);
 	}
 	
-	ChannelModes(String mode, String description, boolean restricted)
+	ChannelMode(String mode, String description, boolean restricted)
 	{
 		this.mode = mode;
 		this.description = description;

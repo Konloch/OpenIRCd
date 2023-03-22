@@ -1,6 +1,7 @@
 package com.konloch.irc.server.channel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import com.konloch.irc.server.client.User;
@@ -15,6 +16,7 @@ public class Channel
 	private String topic;
 	private String description;
 	private final long createdAt = System.currentTimeMillis();
+	private final HashSet<ChannelMode> modes = new HashSet<>();
 	private final transient List<User> users = new ArrayList<>();
 	
 	public Channel()
@@ -57,8 +59,43 @@ public class Channel
 		return createdAt;
 	}
 	
+	public HashSet<ChannelMode> getModes()
+	{
+		return modes;
+	}
+	
 	public List<User> getUsers()
 	{
 		return users;
+	}
+	
+	public boolean isPermanent()
+	{
+		return getModes().contains(ChannelMode.PERMANENT);
+	}
+	
+	public boolean isPrivate()
+	{
+		return getModes().contains(ChannelMode.PRIVATE);
+	}
+	
+	public boolean isInviteOnly()
+	{
+		return getModes().contains(ChannelMode.INVITE_ONLY);
+	}
+	
+	public boolean isSecret()
+	{
+		return getModes().contains(ChannelMode.SECRET);
+	}
+	
+	public boolean isTLSOnly()
+	{
+		return getModes().contains(ChannelMode.TLS_ONLY);
+	}
+	
+	public boolean isModerated()
+	{
+		return getModes().contains(ChannelMode.MODERATED);
 	}
 }
