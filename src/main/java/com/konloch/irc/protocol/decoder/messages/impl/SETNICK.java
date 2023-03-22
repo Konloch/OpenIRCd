@@ -1,14 +1,13 @@
 package com.konloch.irc.protocol.decoder.messages.impl;
 
-import static com.konloch.irc.protocol.encoder.messages.IRCOpcodes.ERR_NICKNAMEINUSE;
-import static com.konloch.irc.protocol.encoder.messages.IRCOpcodes.RPL_WELCOME;
-
 import com.konloch.irc.extension.events.listeners.IRCdUserListener;
 import com.konloch.irc.protocol.ProtocolMessage;
 import com.konloch.irc.protocol.decoder.messages.DecodeMessage;
 import com.konloch.irc.server.channel.Channel;
 import com.konloch.irc.server.client.User;
 import com.konloch.irc.server.util.EscapeUtil;
+
+import static com.konloch.irc.protocol.encoder.messages.IRCOpcodes.*;
 
 /**
  * @author Konloch
@@ -26,14 +25,29 @@ public class SETNICK implements ProtocolMessage
 		
 		//get nick from msg value and escape invalid nick characters
 		final String nick = EscapeUtil.escapeNonAlphaNumericNick(msgVal.trim());
+		boolean invalidNick = false;
 		
 		for(IRCdUserListener listener : user.getIRC().getEvents().getUserEvents())
 			if(!listener.canChangeNick(user, nick))
-				return;
+			{
+				invalidNick = true;
+				break;
+			}
 		
 		//do not process invalid nicks
-		if(nick.isEmpty()) //TODO nick min and max length
+		if(nick.isEmpty()
+				|| nick.length() < user.getIRC().fromConfigInt("nick.length.min")
+				|| nick.length() > user.getIRC().fromConfigInt("nick.length.max"))
+			invalidNick = true;
+		
+		//reply with invalid nick
+		if(invalidNick)
+		{
+			user.getEncoder().newServerUserMessage()
+					.opcode(ERR_ERRONEOUSNICKNAME)
+					.send();
 			return;
+		}
 		
 		synchronized (LOCK)
 		{
