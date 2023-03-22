@@ -5,6 +5,7 @@ import static com.konloch.irc.protocol.encoder.messages.IRCOpcodes.ERR_UNKNOWNCO
 import com.konloch.irc.extension.events.listeners.IRCdUserListener;
 import com.konloch.irc.protocol.decoder.messages.DecodeMessage;
 import com.konloch.irc.server.client.User;
+import com.konloch.irc.server.util.EscapeUtil;
 import com.konloch.util.FastStringUtils;
 
 /**
@@ -31,12 +32,12 @@ public class IRCProtocolDecoder
 			if (message.contains(" "))
 			{
 				String[] blob = FastStringUtils.split(message, " ", 2);
-				messageIdentifier = blob[0];
+				messageIdentifier = EscapeUtil.escapeNonASCII(blob[0]);
 				messageValue = blob[1];
 			}
 			else
 			{
-				messageIdentifier = message;
+				messageIdentifier = EscapeUtil.escapeNonASCII(message);
 				messageValue = null;
 			}
 			
