@@ -24,8 +24,9 @@ public class JOIN implements ProtocolMessage
 		if(msgVal == null || msgVal.isEmpty())
 			return;
 		
+		//don't process until they have set first nick
 		if(!user.isFlagHasSetInitialNick())
-			user.setFlagHasSetInitialNick(true);
+			return;
 		
 		for(IRCdUserListener listener : user.getIRC().getEvents().getUserEvents())
 			if(!listener.onJoinChannel(user, msgVal))
