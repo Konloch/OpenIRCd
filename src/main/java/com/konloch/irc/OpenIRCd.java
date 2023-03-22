@@ -279,11 +279,11 @@ public class OpenIRCd
 		}
 		
 		//parse base (english) translations
-		configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/english.ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
+		configParser.parse(new ArrayList<>(Arrays.asList(new String(Objects.requireNonNull(ReadResource.read("/translations/english.ini")), StandardCharsets.UTF_8).split("\\r?\\n"))));
 		
 		//parse non-english translations
 		if(!translation.equals("english"))
-			configParser.parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/" + translation + ".ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
+			configParser.parse(new ArrayList<>(Arrays.asList(new String(Objects.requireNonNull(ReadResource.read("/translations/" + translation + ".ini")), StandardCharsets.UTF_8).split("\\r?\\n"))));
 	}
 	
 	public Collection<User> getUsers()
