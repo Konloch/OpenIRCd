@@ -7,6 +7,7 @@ import com.konloch.irc.protocol.ProtocolMessage;
 import com.konloch.irc.protocol.decoder.messages.DecodeMessage;
 import com.konloch.irc.server.channel.Channel;
 import com.konloch.irc.server.client.User;
+import com.konloch.irc.server.util.EscapeUtil;
 import com.konloch.util.FastStringUtils;
 
 /**
@@ -23,8 +24,6 @@ public class JOIN implements ProtocolMessage
 		if(msgVal == null || msgVal.isEmpty())
 			return;
 		
-		//TODO check if msg val is ascii
-		
 		if(!user.isFlagHasSetInitialNick())
 			user.setFlagHasSetInitialNick(true);
 		
@@ -38,7 +37,7 @@ public class JOIN implements ProtocolMessage
 		final String[] channels = FastStringUtils.split(msgVal.replace(" ", ""), ",");
 		
 		for(String channelName : channels)
-			joinChannel(user, channelName);
+			joinChannel(user, EscapeUtil.escapeNonAlphaNumericChannel(channelName));
 	}
 	
 	private void joinChannel(User user, String channelName)
