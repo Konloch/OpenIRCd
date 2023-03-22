@@ -31,7 +31,7 @@ public class SETNICK implements ProtocolMessage
 		
 		final String nick = msgVal.trim();
 		
-		//TODO validate nick contains A-Z 0-9
+		//TODO validate nick contains only A-Z 0-9
 		
 		//do not process invalid nicks
 		if(nick.isEmpty())
