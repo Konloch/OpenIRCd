@@ -27,7 +27,7 @@ public class PRIVMSG implements ProtocolMessage
 		
 		final String[] splitData = msgVal.split(" ", 2);
 		final String channelName = EscapeUtil.escapeNonAlphaNumericChannel(splitData[0]);
-		final String text = EscapeUtil.escapeNonAlphaNumeric(splitData[1].substring(1));
+		final String text = EscapeUtil.escapeNonASCII(splitData[1].substring(1));
 		
 		for(IRCdUserListener listener : user.getIRC().getEvents().getUserEvents())
 			if(!listener.onChannelMessage(user, channelName, text))
