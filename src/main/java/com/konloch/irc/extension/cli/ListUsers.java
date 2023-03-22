@@ -26,9 +26,20 @@ public class ListUsers implements Plugin
 			if(command.getArguments().length == 0)
 			{
 				System.out.println("Connected Users:");
-				for(User connectedUser : irc.getConnected().values())
+				if(irc.getConnected().isEmpty())
+					System.out.println("\tNone");
+				else for(User connectedUser : irc.getConnected().values())
 				{
-					System.out.println("\t+ " + connectedUser.getNick() + " - " + connectedUser.getUser() + " - " + connectedUser.getRealName());
+					StringBuilder sb = new StringBuilder("\t+ ");
+					
+					if(!connectedUser.isFlagHasAuthorizedNick() && irc.getDB().getRegisteredUsers().containsKey(connectedUser.getNick()))
+						sb.append("[UNAUTHORIZED] ");
+					
+					sb.append(connectedUser.getNick()).append(" - ");
+					sb.append(connectedUser.getUser()).append(" - ");
+					sb.append(connectedUser.getRealName());
+					
+					System.out.println(sb);
 				}
 				
 				ArrayList<UserData> registeredUsers = new ArrayList<>(irc.getDB().getRegisteredUsers().values());
@@ -45,8 +56,11 @@ public class ListUsers implements Plugin
 					return 0;
 				});
 				
+				System.out.println();
 				System.out.println("Registered Users:");
-				for(UserData registeredUserData : registeredUsers)
+				if(registeredUsers.isEmpty())
+					System.out.println("\tNone");
+				else for(UserData registeredUserData : registeredUsers)
 				{
 					System.out.println("\t+ " + registeredUserData.getNick() + " - " + registeredUserData.getEmail() + " - " + registeredUserData.getUsergroup());
 				}
