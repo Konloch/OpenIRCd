@@ -19,10 +19,8 @@ public class PRIVMSG implements ProtocolMessage
 		if(msgVal == null || msgVal.isEmpty())
 			return;
 		
+		//don't process until they have set first nick
 		if(!user.isFlagHasSetInitialNick())
-			return;
-		
-		if(!user.isFlagHasSetInitialUser())
 			return;
 		
 		final String[] splitData = msgVal.split(" ", 2);
