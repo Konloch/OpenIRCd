@@ -103,7 +103,7 @@ public class OpenIRCd
 		if(!getMOTDFile().exists())
 			DumpResource.dump("/MOTD.txt", getMOTDFile());
 		
-		//todo data should be loaded here
+		//load all server data
 		db = new IRCdDB(this);
 		
 		//TODO plugins should be loaded here
