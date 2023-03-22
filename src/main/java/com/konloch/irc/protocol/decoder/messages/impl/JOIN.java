@@ -29,7 +29,7 @@ public class JOIN implements ProtocolMessage
 			return;
 		
 		for(IRCdUserListener listener : user.getIRC().getEvents().getUserEvents())
-			if(!listener.onJoinChannel(user, msgVal))
+			if(!listener.onJoinChannel(user, msgVal))  //TODO REPL_error of some kind
 				return;
 		
 		if(!msgVal.startsWith("#") || msgVal.length() < 2)
