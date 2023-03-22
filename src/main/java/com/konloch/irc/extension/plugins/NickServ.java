@@ -98,9 +98,15 @@ public class NickServ implements Plugin
 					//TODO 30 seconds should be in config file
 					user.getIRC().getTaskManager().delay(30_000, (task)->
 					{
+						//user has disconnected
 						if(!user.isActive())
 							return;
 						
+						//nick already changed
+						if(!user.getNick().equals(nick))
+							return;
+						
+						//user has not identified yet
 						if(!user.isFlagHasAuthorizedNick())
 							user.disconnect();
 					});
