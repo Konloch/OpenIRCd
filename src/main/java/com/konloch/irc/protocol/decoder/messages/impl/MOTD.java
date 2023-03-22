@@ -19,6 +19,7 @@ public class MOTD implements ProtocolMessage
 	public void run(User user, String msgVal)
 	{
 		File MOTD = user.getIRC().getMOTDFile();
+		
 		if(MOTD.exists())
 		{
 			user.getEncoder().newServerUserMessage()
