@@ -401,7 +401,7 @@ public class OpenIRCd
 	
 	public String getIRCdVersion()
 	{
-		return "0.1.0";
+		return "0.2.0";
 	}
 	
 	public String getIRCdVersionString()
