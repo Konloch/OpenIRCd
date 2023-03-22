@@ -49,6 +49,7 @@ public class SETNICK implements ProtocolMessage
 			return;
 		}
 		
+		//attempt to set the nick
 		synchronized (LOCK)
 		{
 			User nickInUse = user.getIRC().getUser(nick);
