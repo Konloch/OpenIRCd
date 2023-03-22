@@ -96,7 +96,6 @@ public class OPCommands implements Plugin
 		System.out.println("`" + nick + "` has been given user privileges.");
 	}
 	
-	
 	public void list(PermissionUserGroup userGroup)
 	{
 		for(UserData data : irc.getDB().getRegisteredUsers().values())
