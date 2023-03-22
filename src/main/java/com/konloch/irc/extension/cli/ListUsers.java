@@ -53,7 +53,7 @@ public class ListUsers implements Plugin
 					if(o1.getUsergroup() == PermissionUserGroup.LOCAL_OPERATOR && o2.getUsergroup() == PermissionUserGroup.USER)
 						return -1;
 					
-					return 0;
+					return o1.getNick().compareTo(o2.getNick());
 				});
 				
 				System.out.println();
