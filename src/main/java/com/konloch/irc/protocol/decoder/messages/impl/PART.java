@@ -7,6 +7,7 @@ import com.konloch.irc.protocol.ProtocolMessage;
 import com.konloch.irc.protocol.decoder.messages.DecodeMessage;
 import com.konloch.irc.server.channel.Channel;
 import com.konloch.irc.server.client.User;
+import com.konloch.irc.server.util.EscapeUtil;
 import com.konloch.util.FastStringUtils;
 
 /**
@@ -21,8 +22,6 @@ public class PART implements ProtocolMessage
 		if(msgVal == null || msgVal.isEmpty())
 			return;
 		
-		//TODO check if msg val is ascii
-		
 		if(!user.isFlagHasSetInitialNick())
 			user.setFlagHasSetInitialNick(true);
 		
@@ -36,7 +35,7 @@ public class PART implements ProtocolMessage
 		final String[] channels = FastStringUtils.split(msgVal.replace(" ", ""), ",");
 		
 		for(String channelName : channels)
-			leaveChannel(user, channelName);
+			leaveChannel(user,  EscapeUtil.escapeNonAlphaNumericChannel(channelName));
 	}
 	
 	private void leaveChannel(User user, String channelName)
