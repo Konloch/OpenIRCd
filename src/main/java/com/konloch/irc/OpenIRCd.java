@@ -115,7 +115,7 @@ public class OpenIRCd
 		events.getIrcEvents().forEach(IRCdListener::onIRCBoot);
 		
 		//store the maximum simultaneous connections
-		final int maximumSimultaneousConnections = fromConfigInt("limitMaxSimultaneousConnections");
+		final int maximumSimultaneousConnections = fromConfigInt("simultaneous.connections.limit");
 		
 		//create a new socket server
 		server = new SocketServer(fromConfigInt("port"), fromConfigInt("threads"),
@@ -436,17 +436,17 @@ public class OpenIRCd
 	
 	public boolean isResourceLimiterEnabled()
 	{
-		return fromConfigBoolean("resourceLimiter");
+		return fromConfigBoolean("resource.limiter");
 	}
 	
 	public boolean isNickServEnabled()
 	{
-		return fromConfigBoolean("nickServ");
+		return fromConfigBoolean("nickserv");
 	}
 	
 	public boolean isConnectionNoticeEnabled()
 	{
-		return fromConfigBoolean("connectionNotice");
+		return fromConfigBoolean("connection.notice");
 	}
 	
 	public boolean isVerbose()

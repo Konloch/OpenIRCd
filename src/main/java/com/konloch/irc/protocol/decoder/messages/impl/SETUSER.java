@@ -71,7 +71,7 @@ public class SETUSER implements ProtocolMessage
 		//send the info message
 		user.getEncoder().newServerUserMessage()
 				.opcode(RPL_INFO)
-				.message(user.getIRC().getHost() + " " + user.getIRC().getIRCdVersion() + " " + user.getIRC().fromConfig("userModes") + " " + user.getIRC().fromConfig("channelModes"))
+				.message(user.getIRC().getHost() + " " + user.getIRC().getIRCdVersion() + " " + user.getIRC().fromConfig("user.modes") + " " + user.getIRC().fromConfig("channel.modes"))
 				.send();
 		
 		//send the MOTD

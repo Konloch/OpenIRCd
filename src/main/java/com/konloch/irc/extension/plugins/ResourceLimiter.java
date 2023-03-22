@@ -26,11 +26,11 @@ public class ResourceLimiter implements Plugin
 	@Override
 	public void install(OpenIRCd irc)
 	{
-		final int maxChannels = irc.fromConfigInt("limitMaxChannels");
-		final int maxChannelUsers = irc.fromConfigInt("limitMaxChannelUsers");
-		final int maxChannelsPerUser = irc.fromConfigInt("limitMaxChannelsPerUser");
-		final int maxMessagesPerUserPerMinute = irc.fromConfigInt("limitMaxMessagesPerUserPerMinute");
-		final long maxChannelCreationPerUser = irc.fromConfigInt("limitMaxChannelCreationPerUser");
+		final int maxChannels = irc.fromConfigInt("channel.limit");
+		final int maxChannelUsers = irc.fromConfigInt("channel.user.limit");
+		final int maxChannelsPerUser = irc.fromConfigInt("user.channel.connection.limit");
+		final long channelCreationTimeLimit = irc.fromConfigInt("user.channel.creation.time.limit");
+		final int maxMessagesPerUserPerMinute = irc.fromConfigInt("user.mpm.limit");
 		
 		irc.getEvents().getUserEvents().add(new IRCdUserAdapter()
 		{
@@ -67,7 +67,7 @@ public class ResourceLimiter implements Plugin
 			{
 				final RLUserData userData = limiterUserData.get(user.getClient().getUID());
 				
-				boolean creatingTooFast = System.currentTimeMillis()-userData.lastChannelCreation >= maxChannelCreationPerUser;
+				boolean creatingTooFast = System.currentTimeMillis()-userData.lastChannelCreation >= channelCreationTimeLimit;
 				
 				if(!creatingTooFast)
 					userData.lastChannelCreation = System.currentTimeMillis();
