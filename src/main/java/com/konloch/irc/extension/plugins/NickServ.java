@@ -82,10 +82,11 @@ public class NickServ implements Plugin
 			@Override
 			public boolean onChangeNick(User user, String nick)
 			{
-				if(irc.getDB().getRegisteredUsers().containsKey(user.getNick().toLowerCase()))
+				if(irc.getDB().getRegisteredUsers().containsKey(nick.toLowerCase()))
 				{
 					//send registered
 					user.getEncoder().sendNotice(irc.fromConfig("registered"));
+					sendMessage(user, "This nick is registered, type '/msg NickServ IDENTIFY <password>` to authorize yourself as the owner.");
 					
 					//automatically disconnect after 30 seconds of being unauthorized
 					//TODO 30 seconds should be in config file
@@ -125,6 +126,7 @@ public class NickServ implements Plugin
 							sendMessage(user, "Invalid command. Use /msg NickServ help for a command listing.");
 							break;
 							
+						case "H":
 						case "HELP":
 							sendMessage(user, "/msg NickServ REGISTER <password> <email>");
 							sendMessage(user, "+ Register your nick using the REGISTER command");
@@ -133,6 +135,8 @@ public class NickServ implements Plugin
 							sendMessage(user, "+ Authenticate your nick on login using the IDENTIFY command");
 							break;
 							
+						case "R":
+						case "REG":
 						case "REGISTER":
 							if(split[1].contains(" ")) //registered with e-mail
 							{
@@ -165,7 +169,7 @@ public class NickServ implements Plugin
 									UserData data = new UserData(nick, Checksum.sha256(password), email);
 									
 									//store the nick
-									irc.getDB().getRegisteredUsers().put(nick, data);
+									irc.getDB().getRegisteredUsers().put(nick.toLowerCase(), data);
 									
 									//set as authorized
 									user.setFlagHasAuthorizedNick(true);
@@ -180,6 +184,8 @@ public class NickServ implements Plugin
 							
 							break;
 						
+						case "I":
+						case "IDENT":
 						case "IDENTIFY":
 							password = split[1].trim();
 							
@@ -210,6 +216,7 @@ public class NickServ implements Plugin
 							if(validPassword)
 							{
 								user.setFlagHasAuthorizedNick(true);
+								sendMessage(user, "Welcome back " + user.getNick() + ".");
 							}
 							else
 							{
