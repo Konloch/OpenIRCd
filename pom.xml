@@ -3,7 +3,7 @@
 
 	<groupId>com.konloch</groupId>
 	<artifactId>OpenIRCd</artifactId>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 
 	<name>OpenIRCd</name>
 	<description>OpenIRCd is an easy-to-use zero dependency minimalistic IRC server for Java.</description>
