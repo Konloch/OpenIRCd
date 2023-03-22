@@ -31,6 +31,12 @@ public class SETNICK implements ProtocolMessage
 		
 		final String nick = msgVal.trim();
 		
+		//TODO validate nick contains A-Z 0-9
+		
+		//do not process invalid nicks
+		if(nick.isEmpty())
+			return;
+		
 		synchronized (LOCK)
 		{
 			User nickInUse = user.getIRC().getUser(nick);
@@ -44,9 +50,10 @@ public class SETNICK implements ProtocolMessage
 				return;
 			}
 			
-			
+			//set the users nick
 			user.setNick(nick);
 			
+			//set the initial nick has been set flag
 			if(!user.isFlagHasSetInitialNick())
 				user.setFlagHasSetInitialNick(true);
 			
