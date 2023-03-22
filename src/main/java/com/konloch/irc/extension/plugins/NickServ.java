@@ -40,7 +40,6 @@ public class NickServ implements Plugin
 			}
 		});
 		
-		
 		final ArrayList<String> removeList = new ArrayList<>();
 		irc.getTaskManager().delayLoop(1000, (task)->
 		{
