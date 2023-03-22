@@ -124,7 +124,7 @@ public class NickServ implements Plugin
 				//prevent joining channels if you are not registered yet
 				if(irc.getDB().getRegisteredUsers().containsKey(user.getNick().toLowerCase())
 						&& !user.isFlagHasAuthorizedNick())
-					return false; //TODO REPL_error of some kind
+					return false;
 				
 				return true;
 			}
