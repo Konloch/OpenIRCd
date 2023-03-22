@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * This is used to serialize maps, lists or any other kind of collection.
@@ -55,13 +56,13 @@ public class CollectionsSerializer
 	public void serializeObject(StringBuilder sb, Object value)
 	{
 		if(value == null)
-			sb.append("null").append("\n");
+			sb.append("N=").append("null").append("\n");
 		else
 		{
 			sb.append(value.getClass().getName()).append("=");
 			
 			if (value instanceof String)
-				sb.append(unicodeEscapeKeywordCharacters((String) value)).append("\n");
+				sb.append("P=").append(unicodeEscapeKeywordCharacters((String) value)).append("\n");
 			else if (value instanceof Boolean
 					|| value instanceof Byte
 					|| value instanceof Short
@@ -70,16 +71,42 @@ public class CollectionsSerializer
 					|| value instanceof Double
 					|| value instanceof Float
 			)
-				sb.append(value).append("\n");
+				sb.append("P=").append(value).append("\n");
 			else if (value instanceof Enum)
-				sb.append(value).append("=").append("ENUM\n");
-			//TODO
-			/*else if (value instanceof Collection)
-				sb.append(value).append("=").append("COLLECTION\n");
+				sb.append("ENUM=").append(value).append("\n");
+			else if (value instanceof Collection)
+			{
+				sb.append("COLLECTION={\n");
+				
+				Collection collection = (Collection) value;
+				
+				for(Object o : collection)
+				{
+					//write value
+					serializeObject(sb, o);
+				}
+				
+				sb.append("}\n");
+			}
 			else if (value instanceof Map)
-				sb.append(value).append("=").append("MAP\n");
-			else if (value instanceof Array)
-				sb.append(value).append("=").append("ARRAY\n");*/
+			{
+				sb.append("MAP={\n");
+				
+				Map map = (Map) value;
+				
+				map.forEach((k, v) ->
+				{
+					//write key
+					serializeObject(sb, k);
+					
+					//write value
+					serializeObject(sb, v);
+				});
+				
+				sb.append("}\n");
+			}
+			//else if (value.getClass().getName().startsWith("[")) //TODO arrays
+			//	sb.append(value).append("=").append("ARRAY\n");
 			else //write as non-primitive objects
 			{
 				boolean containsAnyValidFields = false;

@@ -4,6 +4,7 @@ import com.konloch.irc.server.data.serializer.CollectionsSerializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -39,9 +40,6 @@ public class SerializerTest
 		System.out.println("Account List Test:\n" + simpleTest);
 		
 		//TODO deserialize collections
-		
-		if(true)
-			return;
 		
 		//build test map
 		HashMap<String, TestData> complexData = new HashMap<>();
@@ -105,6 +103,7 @@ public class SerializerTest
 		private EnumTest enums = EnumTest.VALUE_1;
 		
 		//TODO
+		//private HashSet<EnumTest> hashSetEnumTest = new HashSet<>();
 		//private int[] wazza = new int[]{1,2,3,4,5,6};
 		//private ArrayList<String> arrayList = new ArrayList<>();
 		//`private HashMap<String, String> hashMap = new HashMap<>();

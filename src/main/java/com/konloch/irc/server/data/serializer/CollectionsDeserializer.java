@@ -165,30 +165,35 @@ class CollectionsDeserializer
 					else
 					{
 						String[] classValue = FastStringUtils.split(line, "=", 4);
-						valueVariableName = classValue[0];
-						valueClass = classValue[1];
 						
 						//enum
 						if(classValue.length == 4)
 						{
-							valueValue = classValue[2];
+							valueVariableName = classValue[0];
+							valueClass = classValue[1];
+							String type = classValue[2];
+							valueValue = classValue[3];
 							
-							//inject enum values
-							injectEnumValue(dynamicBuild, valueVariableName, valueValue);
-						}
-						//object
-						else if(classValue.length == 3)
-						{
-							valueValue = classValue[2];
-							
-							//inject object
-							injectValue(dynamicBuild, valueVariableName, valueValue);
-						}
-						//primitive(ish)
-						else
-						{
-							//inject null
-							injectValue(dynamicBuild, valueVariableName, null);
+							switch(type)
+							{
+								case "N": //null value
+									injectValue(dynamicBuild, valueVariableName, null);
+									break;
+								case "P": //primitive(ish)
+								case "O": //object
+									injectValue(dynamicBuild, valueVariableName, valueValue);
+									break;
+								case "ENUM":
+									//inject enum values
+									injectEnumValue(dynamicBuild, valueVariableName, valueValue);
+									break;
+								case "COLLECTION":
+									//TODO
+									//childDynamicBuildIndex++;
+									break;
+								default:
+									throw new RuntimeException("Unknown Type: " + type);
+							}
 						}
 					}
 				}
