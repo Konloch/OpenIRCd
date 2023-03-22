@@ -97,7 +97,7 @@ public class OpenIRCd
 		configParser.parse(new ArrayList<>(Arrays.asList("version=" + getIRCdVersion())));
 		
 		//copy the config variables
-		keepAlive = fromConfigInt("keepAlive");
+		keepAlive = fromConfigInt("keep.alive");
 		
 		//drop the default MOTD
 		if(!getMOTDFile().exists())
@@ -396,7 +396,7 @@ public class OpenIRCd
 	
 	public String getIRCdName()
 	{
-		return fromConfig("IRCdName");
+		return fromConfig("IRCd");
 	}
 	
 	public String getIRCdVersion()
