@@ -26,10 +26,6 @@ public class PART implements ProtocolMessage
 		if(!user.isFlagHasSetInitialNick())
 			return;
 		
-		for(IRCdUserListener listener : user.getIRC().getEvents().getUserEvents())
-			if(!listener.onJoinChannel(user, msgVal))
-				return;
-		
 		if(!msgVal.startsWith("#") || msgVal.length() < 2)
 			return;
 		
