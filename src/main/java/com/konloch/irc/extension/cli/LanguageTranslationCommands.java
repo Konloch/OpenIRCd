@@ -9,6 +9,7 @@ import com.konloch.irc.server.util.ReadResource;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * @author Konloch
@@ -42,7 +43,7 @@ public class LanguageTranslationCommands implements Plugin
 					return;
 				}
 				
-				irc.getConfigParser().parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/" + translation + ".ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
+				irc.getConfigParser().parse(new ArrayList<>(Arrays.asList(new String(Objects.requireNonNull(ReadResource.read("/translations/" + translation + ".ini")), StandardCharsets.UTF_8).split("\\r?\\n"))));
 				System.out.println(irc.fromConfig("command.translation.set") + " `" + translation + "`");
 			}
 			else
