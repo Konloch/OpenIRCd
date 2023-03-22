@@ -10,7 +10,7 @@ public class EscapeUtil
 {
 	public static Pattern ALPHA_NUMERIC = Pattern.compile("[^A-Za-z0-9]");
 	public static Pattern ALPHA_NUMERIC_NICK = Pattern.compile("[^A-Za-z0-9 \\-_\\[\\]{}\\\\|]");
-	public static Pattern ALPHA_NUMERIC_CHANNEL = Pattern.compile("[^A-Za-z0-9_]");
+	public static Pattern ALPHA_NUMERIC_CHANNEL = Pattern.compile("[^A-Za-z0-9#]");
 	public static Pattern ASCII = Pattern.compile("[^A-Za-z0-9\\[\\]\\\\=+\\-()_;:,.'\" @!?#$%^&*<>/|]");
 	
 	public static String escapeNonAlphaNumeric(String input)
