@@ -25,13 +25,13 @@ public class LanguageTranslationCommands implements Plugin
 			if(command.getArguments().length == 2 && command.getArguments()[0].equals("set")) {} //handled below
 			else if(command.getArguments().length == 1 && command.getArguments()[0].equals("list"))
 			{
-				System.out.println("There are " + Language.values().length + " translations:");
+				System.out.println(Language.values().length + " " + irc.fromConfig("total.translations") + ":");
 				for(Language language : Language.values())
 					System.out.println(" + " + language.name().toLowerCase() + " - " + language.getReadableName());
 			}
 			else
 			{
-				System.out.println("Incorrect command usage");
+				System.out.println(irc.fromConfig("command.incorrect.usage"));
 			}
 		}).addArgument("list", irc.fromConfig("command.command.list.description"))
 				.get());
@@ -48,12 +48,12 @@ public class LanguageTranslationCommands implements Plugin
 				}
 				catch(IllegalArgumentException e)
 				{
-					System.out.println("Language `" + translation + "` is not found, type `lang list` for the supported list");
+					System.out.println("`" + translation + "` " + irc.fromConfig("command.translation.not.found"));
 					return;
 				}
 				
 				irc.getConfigParser().parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/" + translation + ".ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
-				System.out.println("Language set to `" + translation + "`");
+				System.out.println(irc.fromConfig("command.translation.set") + " `" + translation + "`");
 			}
 		}).addArgument("set", irc.fromConfig("command.translation.set.description"))
 				.addArgument("translation", irc.fromConfig("command.translation.set.translation.description"))

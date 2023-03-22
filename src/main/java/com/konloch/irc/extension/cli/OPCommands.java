@@ -33,13 +33,13 @@ public class OPCommands implements Plugin
 			else if(args.length >= 1 && args[0].equals("list"))
 				list(GLOBAL_OPERATOR);
 			else
-				System.out.println("Incorrect command usage");
+				System.out.println(irc.fromConfig("command.incorrect.usage"));
 		}).addArgument("add/remove", irc.fromConfig("command.op.add.description"))
 				.addArgument("nick", irc.fromConfig("command.op.add.nick.description"))
 				.get());
 		
 		//local op
-		irc.getCLI().register(new Command("lop", "Give or remove local operator privileges on a specific user's nick", command->
+		irc.getCLI().register(new Command("lop", irc.fromConfig("command.lop.description"), command->
 		{
 			String[] args = command.getArguments();
 			
@@ -50,7 +50,7 @@ public class OPCommands implements Plugin
 			else if(args.length >= 1 && args[0].equals("list"))
 				list(LOCAL_OPERATOR);
 			else
-				System.out.println("Incorrect command usage");
+				System.out.println(irc.fromConfig("command.incorrect.usage"));
 		}).addArgument("add/remove", irc.fromConfig("command.op.add.description"))
 				.addArgument("nick", irc.fromConfig("command.op.add.nick.description"))
 				.get());
@@ -60,7 +60,7 @@ public class OPCommands implements Plugin
 	{
 		if(!irc.getDB().getRegisteredUsers().containsKey(nick))
 		{
-			System.out.println("`" + nick + "` needs to register and secure their nick before you can give them " + userGroup.getTitle() + " status.");
+			System.out.println("`" + nick + "` needs to register and secure their nick before you can set their group to " + userGroup.getTitle() + ".");
 			return;
 		}
 		

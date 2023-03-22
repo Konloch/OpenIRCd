@@ -58,7 +58,7 @@ public class HelpCommand implements Plugin
 				}
 				
 				if(!listedHeader)
-					System.out.println("Incorrect command usage");
+					System.out.println(irc.fromConfig("command.incorrect.usage"));
 			}
 		}).addOptionalArgument("command", irc.fromConfig("command.help.command.description")).get());
 	}

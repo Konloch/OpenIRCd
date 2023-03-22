@@ -20,7 +20,7 @@ public class ListChannels implements Plugin
 	public void install(OpenIRCd irc)
 	{
 		//help command
-		irc.getCLI().register(new Command("list", "List all channels", command->
+		irc.getCLI().register(new Command("list", irc.fromConfig("command.list.description"), command->
 		{
 			
 			ArrayList<Channel> channels = new ArrayList<>(irc.getDB().getChannels().values());
