@@ -8,6 +8,7 @@ import com.konloch.irc.protocol.ProtocolMessage;
 import com.konloch.irc.protocol.decoder.messages.DecodeMessage;
 import com.konloch.irc.server.channel.Channel;
 import com.konloch.irc.server.client.User;
+import com.konloch.irc.server.util.EscapeUtil;
 
 /**
  * @author Konloch
@@ -23,18 +24,15 @@ public class SETNICK implements ProtocolMessage
 		if(msgVal == null || msgVal.isEmpty())
 			return;
 		
-		//TODO check if msg val is ascii
+		//get nick from msg value and escape invalid nick characters
+		final String nick = EscapeUtil.escapeNonAlphaNumericNick(msgVal.trim());
 		
 		for(IRCdUserListener listener : user.getIRC().getEvents().getUserEvents())
-			if(!listener.canChangeNick(user, msgVal))
+			if(!listener.canChangeNick(user, nick))
 				return;
 		
-		final String nick = msgVal.trim();
-		
-		//TODO validate nick contains only A-Z 0-9
-		
 		//do not process invalid nicks
-		if(nick.isEmpty())
+		if(nick.isEmpty()) //TODO nick min and max length
 			return;
 		
 		synchronized (LOCK)
