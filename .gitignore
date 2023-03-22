@@ -41,5 +41,4 @@ replay_pid*
 #OpenIRCd specific
 /config.ini
 /MOTD.txt
-/channels.db
-/users.db
+/irc.db

@@ -1,5 +1,7 @@
 package com.konloch.irc.server.data;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.konloch.disklib.GZipDiskReader;
 import com.konloch.disklib.GZipDiskWriter;
 import com.konloch.irc.OpenIRCd;
@@ -7,7 +9,6 @@ import com.konloch.irc.extension.events.listeners.IRCdAdapter;
 import com.konloch.irc.server.channel.Channel;
 import com.konloch.irc.server.client.User;
 import com.konloch.irc.server.client.data.UserData;
-import com.konloch.irc.server.data.serializer.CollectionsSerializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,60 +23,35 @@ import java.util.zip.DataFormatException;
 public class IRCdDB
 {
 	private final OpenIRCd irc;
-	private final CollectionsSerializer serializer;
-	private final HashMap<String, Channel> channels;
-	private final HashMap<String, UserData> registeredUsers;
-	private final transient HashMap<Long, User> connected;
-	private final transient HashMap<String, AtomicLong> connectedMap;
-	private final File channelsFile;
-	private final File usersFile;
+	private final Gson serializer;
+	private IRCdDBData data;
+	private final File dataFile;
 	
 	public IRCdDB(OpenIRCd irc)
 	{
 		this.irc = irc;
 		
 		//define the various files
-		channelsFile = new File("channels.db");
-		usersFile = new File("users.db");
+		dataFile = new File("irc.db");
 		
 		//create a new serializer
-		serializer = new CollectionsSerializer();
+		serializer = new GsonBuilder().create();
 		
 		//create a new hashmap for the channels
-		channels = new HashMap<>();
+		data = new IRCdDBData();
 		
 		//load the previously saved channels data if it exists
-		if(channelsFile.exists())
+		if(dataFile.exists())
 		{
 			try
 			{
-				serializer.deserializeHashMap(GZipDiskReader.readString(channelsFile), channels);
+				data = serializer.fromJson(GZipDiskReader.readString(dataFile), IRCdDBData.class);
 			}
 			catch (IOException | DataFormatException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		
-		//create a new hashmap for the users
-		registeredUsers = new HashMap<>();
-		
-		//load the previously saved channels data if it exists
-		if(usersFile.exists())
-		{
-			try
-			{
-				serializer.deserializeHashMap(GZipDiskReader.readString(usersFile), registeredUsers);
-			}
-			catch (IOException | DataFormatException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		
-		//init connected maps
-		connected = new HashMap<>();
-		connectedMap = new HashMap<>();
 		
 		//save on IRCd shutdown
 		irc.getEvents().getIrcEvents().add(new IRCdAdapter()
@@ -92,8 +68,7 @@ public class IRCdDB
 	{
 		try
 		{
-			GZipDiskWriter.write(channelsFile, serializer.serialize(channels));
-			GZipDiskWriter.write(usersFile, serializer.serialize(registeredUsers));
+			GZipDiskWriter.write(dataFile, serializer.toJson(data));
 		}
 		catch (IOException e)
 		{
@@ -103,21 +78,29 @@ public class IRCdDB
 	
 	public HashMap<String, Channel> getChannels()
 	{
-		return channels;
+		return data.channels;
 	}
 	
 	public HashMap<String, UserData> getRegisteredUsers()
 	{
-		return registeredUsers;
+		return data.registeredUsers;
 	}
 	
 	public HashMap<String, AtomicLong> getConnectedMap()
 	{
-		return connectedMap;
+		return data.connectedMap;
 	}
 	
 	public HashMap<Long, User> getConnected()
 	{
-		return connected;
+		return data.connected;
+	}
+	
+	public static class IRCdDBData
+	{
+		private final HashMap<String, Channel> channels = new HashMap<>();
+		private final HashMap<String, UserData> registeredUsers = new HashMap<>();
+		private final transient HashMap<Long, User> connected = new HashMap<>();
+		private final transient HashMap<String, AtomicLong> connectedMap = new HashMap<>();
 	}
 }
