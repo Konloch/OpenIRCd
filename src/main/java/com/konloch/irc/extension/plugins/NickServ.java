@@ -162,9 +162,7 @@ public class NickServ implements Plugin
 								try
 								{
 									//build the nick storage data
-									UserData data = new UserData();
-									data.setEmail(email);
-									data.setPasswordSHA256(Checksum.sha256(password));
+									UserData data = new UserData(nick, Checksum.sha256(password), email);
 									
 									//store the nick
 									irc.getDB().getRegisteredUsers().put(nick, data);

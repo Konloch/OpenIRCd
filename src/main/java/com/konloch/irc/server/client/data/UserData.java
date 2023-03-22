@@ -13,6 +13,17 @@ public class UserData
 	private String email;
 	private PermissionUserGroup usergroup = USER;
 	
+	public UserData()
+	{
+		this(null, null, null);
+	}
+	public UserData(String nick, String passwordSHA256, String email)
+	{
+		this.nick = nick;
+		this.passwordSHA256 = passwordSHA256;
+		this.email = email;
+	}
+	
 	public String getNick()
 	{
 		return nick;

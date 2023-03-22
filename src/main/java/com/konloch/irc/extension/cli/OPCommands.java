@@ -30,10 +30,8 @@ public class OPCommands implements Plugin
 				setUserGroup(command.asString(1), GLOBAL_OPERATOR);
 			else if(args.length >= 2 && args[0].equals("remove"))
 				removeUserGroup(command.asString(1), GLOBAL_OPERATOR);
-			else if(args.length >= 2 && args[0].equals("list"))
-			{
-				//TODO
-			}
+			else if(args.length >= 1 && args[0].equals("list"))
+				list(GLOBAL_OPERATOR);
 			else
 				System.out.println("Incorrect command usage");
 		}).addArgument("add/remove", irc.fromConfig("command.op.add.description"))
@@ -49,10 +47,8 @@ public class OPCommands implements Plugin
 				setUserGroup(command.asString(1), LOCAL_OPERATOR);
 			else if(args.length >= 2 && args[0].equals("remove"))
 				removeUserGroup(command.asString(1), LOCAL_OPERATOR);
-			else if(args.length >= 2 && args[0].equals("list"))
-			{
-				//TODO
-			}
+			else if(args.length >= 1 && args[0].equals("list"))
+				list(LOCAL_OPERATOR);
 			else
 				System.out.println("Incorrect command usage");
 		}).addArgument("add/remove", irc.fromConfig("command.op.add.description"))
@@ -98,5 +94,17 @@ public class OPCommands implements Plugin
 		
 		data.setUsergroup(USER);
 		System.out.println("`" + nick + "` has been given user privileges.");
+	}
+	
+	
+	public void list(PermissionUserGroup userGroup)
+	{
+		for(UserData data : irc.getDB().getRegisteredUsers().values())
+		{
+			if(data.getUsergroup() != userGroup)
+				continue;
+			
+			System.out.println("\t+ " + data.getNick() + " - " + data.getEmail() + " - " + data.getUsergroup());
+		}
 	}
 }
