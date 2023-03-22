@@ -124,7 +124,7 @@ public class NickServ implements Plugin
 				//prevent joining channels if you are not registered yet
 				if(irc.getDB().getRegisteredUsers().containsKey(user.getNick().toLowerCase())
 						&& !user.isFlagHasAuthorizedNick())
-					return false;
+					return false; //TODO REPL_error of some kind
 				
 				return true;
 			}
@@ -136,6 +136,9 @@ public class NickServ implements Plugin
 				final boolean isNickRegistered = isNickRegistered(nick);
 				String password;
 				String email = null;
+				
+				//TODO check if channel is to a user, then check if that user is not authorized yet & they are in the registry
+				// if they are, return false and don't allow users to pm non-authorized users
 				
 				if (channel.equalsIgnoreCase(nickServName))
 				{
