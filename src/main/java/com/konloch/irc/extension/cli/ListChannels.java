@@ -3,7 +3,6 @@ package com.konloch.irc.extension.cli;
 import com.konloch.irc.OpenIRCd;
 import com.konloch.irc.extension.Plugin;
 import com.konloch.irc.server.channel.Channel;
-import com.konloch.irc.server.client.data.UserData;
 import com.konloch.irc.server.util.cli.Command;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class ListChannels implements Plugin
 	@Override
 	public void install(OpenIRCd irc)
 	{
-		//help command
+		//list channels command
 		irc.getCLI().register(new Command("list", irc.fromConfig("command.list.description"), command->
 		{
 			
