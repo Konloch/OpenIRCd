@@ -3,6 +3,7 @@ package com.konloch.irc.protocol.decoder.messages.impl;
 import com.konloch.irc.extension.events.listeners.IRCdUserListener;
 import com.konloch.irc.protocol.ProtocolMessage;
 import com.konloch.irc.protocol.encoder.messages.IRCOpcodes;
+import com.konloch.irc.server.channel.Channel;
 import com.konloch.irc.server.client.User;
 import com.konloch.irc.server.util.EscapeUtil;
 
@@ -25,17 +26,17 @@ public class PRIVMSG implements ProtocolMessage
 			return;
 		
 		final String[] splitData = msgVal.split(" ", 2);
-		final String channel = EscapeUtil.escapeNonAlphaNumericChannel(splitData[0]);
+		final String channelName = EscapeUtil.escapeNonAlphaNumericChannel(splitData[0]);
 		final String text = EscapeUtil.escapeNonAlphaNumeric(splitData[1].substring(1));
 		
 		for(IRCdUserListener listener : user.getIRC().getEvents().getUserEvents())
-			if(!listener.onChannelMessage(user, channel, text))
+			if(!listener.onChannelMessage(user, channelName, text))
 				return;
 		
 		//private messaging between users
-		if(!channel.startsWith("#"))
+		if(!channelName.startsWith("#"))
 		{
-			User other = user.getIRC().getUser(channel);
+			User other = user.getIRC().getUser(channelName);
 			if(other == null)
 			{
 				//TODO REPL_error of some kind?
@@ -51,27 +52,37 @@ public class PRIVMSG implements ProtocolMessage
 			other.getEncoder().newUserMessage()
 					.who(user.getNetworkIdentifier())
 					.opcode(IRCOpcodes.RPL_PRIVMSG)
-					.extra(channel)
+					.extra(channelName)
 					.message(text)
 					.send();
 			
 			return;
 		}
 		
+		Channel channel = user.getIRC().getChannels().get(channelName);
+		
+		if(channel == null)
+			return; //TODO REPL_error of some kind?
+		
+		//you cannot send messages into channels you're not a part of
+		if(!channel.getUsers().contains(user))
+			return; //TODO REPL_error of some kind?
+		
+		
 		//private messaging between a group
-		//forward message to everyone in the channel
-		for(User other : user.getIRC().getConnected().values())
+		//forward message to everyone in the channelName
+		for(User other : channel.getUsers())
 		{
 			if(other == user)
 				continue;
 			
-			if(!other.getChannels().contains(channel))
+			if(!other.getChannels().contains(channelName))
 				continue;
 			
 			other.getEncoder().newUserMessage()
 					.who(user.getNetworkIdentifier())
 					.opcode(IRCOpcodes.RPL_PRIVMSG)
-					.extra(channel)
+					.extra(channelName)
 					.message(text)
 					.send();
 		}
