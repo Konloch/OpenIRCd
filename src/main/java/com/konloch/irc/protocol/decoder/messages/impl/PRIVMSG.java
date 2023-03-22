@@ -4,6 +4,7 @@ import com.konloch.irc.extension.events.listeners.IRCdUserListener;
 import com.konloch.irc.protocol.ProtocolMessage;
 import com.konloch.irc.protocol.encoder.messages.IRCOpcodes;
 import com.konloch.irc.server.client.User;
+import com.konloch.irc.server.util.EscapeUtil;
 
 /**
  * @author Konloch
@@ -17,8 +18,6 @@ public class PRIVMSG implements ProtocolMessage
 		if(msgVal == null || msgVal.isEmpty())
 			return;
 		
-		//TODO check if msg val is ascii
-		
 		if(!user.isFlagHasSetInitialNick())
 			return;
 		
@@ -26,8 +25,8 @@ public class PRIVMSG implements ProtocolMessage
 			return;
 		
 		final String[] splitData = msgVal.split(" ", 2);
-		final String channel = splitData[0];
-		final String text = splitData[1].substring(1);
+		final String channel = EscapeUtil.escapeNonAlphaNumericChannel(splitData[0]);
+		final String text = EscapeUtil.escapeNonAlphaNumeric(splitData[1].substring(1));
 		
 		for(IRCdUserListener listener : user.getIRC().getEvents().getUserEvents())
 			if(!listener.onChannelMessage(user, channel, text))
