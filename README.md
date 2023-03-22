@@ -33,6 +33,7 @@ java -jar OpenIRCd-v0.1.0.jar
 + **Core API** is started
 + **Object Serialization** is started / partially finished
 + **Channel Functionality** is done, missing permissions
++ **Resource Limiter** is done
 + **NickServ / Authorization** is started
 + **User Modes** not started
 + **Channel Modes** not started
