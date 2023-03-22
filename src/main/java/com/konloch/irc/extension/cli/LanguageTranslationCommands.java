@@ -20,25 +20,15 @@ public class LanguageTranslationCommands implements Plugin
 	@Override
 	public void install(OpenIRCd irc)
 	{
-		//translation list
+		//translation list / select
 		irc.getCLI().register(new Command("lang", irc.fromConfig("command.translation.description"), command->{
-			if(command.getArguments().length == 2 && command.getArguments()[0].equals("set")) {} //handled below
-			else if(command.getArguments().length == 1 && command.getArguments()[0].equals("list"))
+			if(command.getArguments().length == 0)
 			{
 				System.out.println(Language.values().length + " " + irc.fromConfig("total.translations") + ":");
-				for(Language language : Language.values())
+				for (Language language : Language.values())
 					System.out.println(" + " + language.name().toLowerCase() + " - " + language.getReadableName());
 			}
-			else
-			{
-				System.out.println(irc.fromConfig("command.incorrect.usage"));
-			}
-		}).addArgument("list", irc.fromConfig("command.command.list.description"))
-				.get());
-		
-		//translation select
-		irc.getCLI().register(new Command("lang", irc.fromConfig("command.translation.description"), command->{
-			if(command.getArguments().length == 2 && command.getArguments()[0].equals("set"))
+			else if(command.getArguments().length == 2 && command.getArguments()[0].equals("set"))
 			{
 				String translation = command.getArguments()[1];
 				
@@ -55,7 +45,9 @@ public class LanguageTranslationCommands implements Plugin
 				irc.getConfigParser().parse(new ArrayList<>(Arrays.asList(new String(ReadResource.read("/translations/" + translation + ".ini"), StandardCharsets.UTF_8).split("\\r?\\n"))));
 				System.out.println(irc.fromConfig("command.translation.set") + " `" + translation + "`");
 			}
-		}).addArgument("set", irc.fromConfig("command.translation.set.description"))
+			else
+				System.out.println(irc.fromConfig("command.incorrect.usage"));
+		}).addOptionalArgument("set", irc.fromConfig("command.translation.set.description"))
 				.addArgument("translation", irc.fromConfig("command.translation.set.translation.description"))
 				.get());
 	}
