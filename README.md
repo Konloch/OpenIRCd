@@ -5,6 +5,9 @@ OpenIRCd is an easy-to-use non-blocking high performance IRC server written in J
 
 **This is a work in progress** and acts as an example of how to use the [Socket-Server](https://github.com/Konloch/Socket-Server/) library.
 
+# 💡 Requirements
++ Java Runtime 1.8 **or higher**
+
 # ⚙️ Start IRC Server
 + Start by [downloading the latest release](https://github.com/Konloch/OpenIRCd/releases), then you can launch the IRCd using the Java -jar flag.
 ```
@@ -43,3 +46,4 @@ java -jar OpenIRCd-v0.1.0.jar
 * [Website](https://konloch.com/OpenIRCd/)
 * [Discord Server](https://discord.gg/aexsYpfMEf)
 * [Download Releases](https://github.com/Konloch/OpenIRCd/releases)
+* [Built With Socket-Server](https://konloch.com/Socket-Server/)
