@@ -47,3 +47,6 @@ java -jar OpenIRCd-v0.1.0.jar
 * [Discord Server](https://discord.gg/aexsYpfMEf)
 * [Download Releases](https://github.com/Konloch/OpenIRCd/releases)
 * [Built With Socket-Server](https://konloch.com/Socket-Server/)
+
+# 👨‍💻 Disclaimer
++ This is a work in progress.
